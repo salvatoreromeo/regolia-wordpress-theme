@@ -1,0 +1,18 @@
+/*
+Theme Name: Regolia
+Theme URI: https://github.com/salvatoreromeo/regolia-wordpress-theme
+Author: Salvatore Romeo
+Author URI: https://github.com/salvatoreromeo
+Description: Tema ufficiale Regolia — gestione semplice di colf, badanti, baby sitter e dog sitter.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 8.0
+License: Proprietary
+License URI: https://regolia.it
+Text Domain: regolia
+GitHub Theme URI: salvatoreromeo/regolia-wordpress-theme
+Tags: business, services, clean, green
+*/
+
+/* Gli stili principali sono in assets/css/main.css, caricati tramite wp_enqueue_scripts */
