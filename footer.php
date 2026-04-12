@@ -51,6 +51,15 @@ defined( 'ABSPATH' ) || exit;
 			</div>
 		</div>
 
+		<?php
+		$regolia_switcher = function_exists( 'regolia_render_landing_switcher' ) ? regolia_render_landing_switcher() : '';
+		if ( $regolia_switcher ) :
+		?>
+		<div class="footer-switcher">
+			<?php echo $regolia_switcher; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		</div>
+		<?php endif; ?>
+
 		<div class="footer-bottom">
 			<p>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Regolia. <?php esc_html_e( 'Tutti i diritti riservati.', 'regolia' ); ?></p>
 			<p><?php esc_html_e( 'P.IVA e CF disponibili su richiesta.', 'regolia' ); ?></p>
