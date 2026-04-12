@@ -1,10 +1,15 @@
 // Minimal WP REST API client with optional Basic auth (Application Passwords).
+// Works against both posts and pages — the caller passes the endpoint type
+// ("posts" or "pages") to every item method. Other endpoints (media, terms)
+// are still typed.
 
 function authHeader({ user, password }) {
   if (!user || !password) return {};
   const token = Buffer.from(`${user}:${password}`).toString('base64');
   return { Authorization: `Basic ${token}` };
 }
+
+export const SUPPORTED_TYPES = ['posts', 'pages'];
 
 export function createClient({ baseUrl, user, password } = {}) {
   if (!baseUrl) throw new Error('baseUrl is required');
@@ -34,36 +39,50 @@ export function createClient({ baseUrl, user, password } = {}) {
     return data;
   }
 
+  function assertType(type) {
+    if (!SUPPORTED_TYPES.includes(type)) {
+      throw new Error(`Unsupported type: ${type}. Expected one of: ${SUPPORTED_TYPES.join(', ')}`);
+    }
+  }
+
   return {
     root,
 
-    async getPosts({ perPage = 100, embed = true, status } = {}) {
+    /* ── Generic item API (posts + pages) ── */
+
+    async getItems(type, { perPage = 100, embed = true, status } = {}) {
+      assertType(type);
       const query = { per_page: String(perPage), _embed: embed ? '1' : '0' };
       if (status) query.status = status;
-      return request('/posts', { query });
+      return request(`/${type}`, { query });
     },
 
-    async findPostBySlug(slug) {
+    async findItemBySlug(type, slug) {
+      assertType(type);
       const query = { slug, status: 'any', context: 'edit', per_page: '1' };
-      const results = await request('/posts', { query });
+      const results = await request(`/${type}`, { query });
       return results[0] || null;
     },
 
-    async createPost(payload) {
-      return request('/posts', {
+    async createItem(type, payload) {
+      assertType(type);
+      return request(`/${type}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
     },
 
-    async updatePost(id, payload) {
-      return request(`/posts/${id}`, {
+    async updateItem(type, id, payload) {
+      assertType(type);
+      return request(`/${type}/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
     },
+
+    /* ── Media ── */
 
     async uploadMedia({ filename, contentType, data, title, altText }) {
       const headers = {
@@ -83,6 +102,8 @@ export function createClient({ baseUrl, user, password } = {}) {
       }
       return media;
     },
+
+    /* ── Taxonomies (posts only) ── */
 
     async listCategories() {
       return request('/categories', { query: { per_page: '100' } });

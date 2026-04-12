@@ -769,6 +769,54 @@ ul, ol { list-style: none; }
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-6);
 }
+.rg-features__grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ══════════════════════════════════════
+   HERO — illustration variant (alternate landings)
+   ══════════════════════════════════════ */
+.rg-hero--illustration .rg-hero__visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+}
+.rg-hero__illustration {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  display: block;
+}
+
+/* ══════════════════════════════════════
+   QUOTE BOX (landing testimonial)
+   ══════════════════════════════════════ */
+.rg-quote {
+  padding: var(--space-20) 0;
+  background: var(--clr-warm-100);
+}
+.rg-quote__box {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-10);
+  background: var(--clr-brand-50);
+  border: 1px solid var(--clr-brand-100);
+  border-radius: var(--radius-2xl);
+  text-align: center;
+}
+.rg-quote__text {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--clr-brand-900);
+  margin-bottom: var(--space-4);
+}
+.rg-quote__sub {
+  font-size: 1rem;
+  color: var(--clr-brand-800);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
+}
 
 .rg-feature-card {
   background: var(--clr-warm-50);
@@ -1365,7 +1413,8 @@ ul, ol { list-style: none; }
   .rg-hero__note { justify-content: center; }
   .rg-hero__visual { order: -1; }
 
-  .rg-features__grid { grid-template-columns: repeat(2, 1fr); }
+  .rg-features__grid,
+  .rg-features__grid--4 { grid-template-columns: repeat(2, 1fr); }
   .rg-testimonials__grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
@@ -1408,8 +1457,13 @@ ul, ol { list-style: none; }
   .rg-steps { flex-direction: column; align-items: center; }
   .rg-step__connector { width: 2px; height: 40px; margin: 0; }
 
-  .rg-features__grid { grid-template-columns: 1fr; }
+  .rg-features__grid,
+  .rg-features__grid--4 { grid-template-columns: 1fr; }
   .rg-testimonials__grid { grid-template-columns: 1fr; }
+  .rg-hero--illustration .rg-hero__visual { min-height: 280px; }
+  .rg-hero__illustration { max-width: 320px; }
+  .rg-quote__text { font-size: 1.375rem; }
+  .rg-quote__box { padding: var(--space-8) var(--space-6); }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; text-align: center; }
 

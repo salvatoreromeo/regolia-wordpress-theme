@@ -1,26 +1,35 @@
 #!/usr/bin/env node
-// Export all published posts from a WordPress site into Markdown + images.
+// Export posts and/or pages from a WordPress site into Markdown + images.
 //
 // Usage:
-//   WP_URL=http://localhost:8090 node export.mjs
-//   WP_URL=http://localhost:8090 node export.mjs --out ./content --include-drafts
+//   WP_URL=http://localhost:8090 node export.mjs                 # posts (default)
+//   WP_URL=http://localhost:8090 node export.mjs --type pages    # pages
+//   WP_URL=http://localhost:8090 node export.mjs --type all      # both
+//   WP_URL=http://localhost:8090 node export.mjs --include-drafts
+//
+// Content is written to `./content/<type>/` where <type> is `posts` or `pages`.
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 
-import { createClient } from './lib/wp-api.mjs';
+import { createClient, SUPPORTED_TYPES } from './lib/wp-api.mjs';
 import { htmlToMarkdown } from './lib/html-to-md.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function parseArgs(argv) {
-  const args = { out: './content', includeDrafts: false };
+  const args = { out: './content', includeDrafts: false, types: ['posts'] };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--out') args.out = argv[++i];
     else if (a === '--include-drafts') args.includeDrafts = true;
+    else if (a === '--type') {
+      const v = argv[++i];
+      if (v === 'all') args.types = [...SUPPORTED_TYPES];
+      else args.types = [v];
+    }
     else if (a === '--help' || a === '-h') args.help = true;
   }
   return args;
@@ -52,48 +61,28 @@ function decodeEntities(s) {
     .trim();
 }
 
-async function main() {
-  const args = parseArgs(process.argv);
-  if (args.help) {
-    console.log('Usage: WP_URL=<url> node export.mjs [--out ./content] [--include-drafts]');
-    process.exit(0);
+async function exportType({ client, type, outDir, includeDrafts }) {
+  console.log(`\n→ Fetching ${type} …`);
+  const items = await client.getItems(type, { perPage: 100, embed: true });
+  const visible = includeDrafts ? items : items.filter((p) => p.status === 'publish');
+  console.log(`  ${visible.length} ${type} to export (of ${items.length} total)`);
+
+  // Build slug map for pages so we can resolve parent IDs → parent slugs
+  const slugById = new Map();
+  if (type === 'pages') {
+    for (const p of items) slugById.set(p.id, p.slug);
   }
-
-  const baseUrl = process.env.WP_URL;
-  if (!baseUrl) {
-    console.error('Missing WP_URL env var (e.g. WP_URL=http://localhost:8090)');
-    process.exit(1);
-  }
-
-  const outDir = path.resolve(__dirname, args.out);
-  await fs.mkdir(outDir, { recursive: true });
-
-  const client = createClient({
-    baseUrl,
-    user: process.env.WP_USER,
-    password: process.env.WP_APP_PASSWORD,
-  });
-
-  console.log(`→ Fetching posts from ${baseUrl} …`);
-  const posts = await client.getPosts({ perPage: 100, embed: true });
-
-  // Build a map of term_id → name for categories and tags via _embedded
-  const published = args.includeDrafts
-    ? posts
-    : posts.filter((p) => p.status === 'publish');
-
-  console.log(`  ${published.length} posts to export (of ${posts.length} total)`);
 
   let count = 0;
-  for (const post of published) {
-    const slug = post.slug || `post-${post.id}`;
+  for (const post of visible) {
+    const slug = post.slug || `item-${post.id}`;
     const title = decodeEntities(post.title?.rendered || slug);
     const excerptHtml = post.excerpt?.rendered || '';
     const excerpt = decodeEntities(excerptHtml.replace(/<[^>]+>/g, ''));
     const contentHtml = post.content?.rendered || '';
     const bodyMd = htmlToMarkdown(contentHtml);
 
-    // Resolve categories / tags via _embedded['wp:term']
+    // Categories and tags (posts only)
     const embeddedTerms = post._embedded?.['wp:term'] || [];
     const flatTerms = embeddedTerms.flat();
     const categories = flatTerms
@@ -130,10 +119,22 @@ async function main() {
       date: post.date_gmt ? `${post.date_gmt}Z` : undefined,
       status: post.status,
       excerpt: excerpt || undefined,
-      categories: categories.length ? categories : undefined,
-      tags: tags.length ? tags : undefined,
       featured_image: featuredImageFile || undefined,
     };
+
+    if (type === 'posts') {
+      if (categories.length) frontmatter.categories = categories;
+      if (tags.length) frontmatter.tags = tags;
+    }
+
+    if (type === 'pages') {
+      if (post.template) frontmatter.template = post.template;
+      if (post.menu_order) frontmatter.menu_order = post.menu_order;
+      if (post.parent) {
+        const parentSlug = slugById.get(post.parent);
+        if (parentSlug) frontmatter.parent_slug = parentSlug;
+      }
+    }
 
     // Remove undefined keys before serialization
     for (const k of Object.keys(frontmatter)) {
@@ -147,7 +148,45 @@ async function main() {
     console.log(`  ✓ ${slug}${featuredImageFile ? ' + image' : ''}`);
   }
 
-  console.log(`\nDone. ${count} files exported to ${outDir}`);
+  console.log(`  Done. ${count} ${type} exported to ${outDir}`);
+  return count;
+}
+
+async function main() {
+  const args = parseArgs(process.argv);
+  if (args.help) {
+    console.log('Usage: WP_URL=<url> node export.mjs [--type posts|pages|all] [--out ./content] [--include-drafts]');
+    process.exit(0);
+  }
+
+  const baseUrl = process.env.WP_URL;
+  if (!baseUrl) {
+    console.error('Missing WP_URL env var (e.g. WP_URL=http://localhost:8090)');
+    process.exit(1);
+  }
+
+  const baseOut = path.resolve(__dirname, args.out);
+  const client = createClient({
+    baseUrl,
+    user: process.env.WP_USER,
+    password: process.env.WP_APP_PASSWORD,
+  });
+
+  console.log(`Exporting from ${baseUrl} (types: ${args.types.join(', ')})`);
+
+  let total = 0;
+  for (const type of args.types) {
+    const typeDir = path.join(baseOut, type);
+    await fs.mkdir(typeDir, { recursive: true });
+    total += await exportType({
+      client,
+      type,
+      outDir: typeDir,
+      includeDrafts: args.includeDrafts,
+    });
+  }
+
+  console.log(`\nAll done. ${total} items total.`);
 }
 
 main().catch((e) => {

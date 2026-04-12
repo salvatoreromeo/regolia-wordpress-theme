@@ -1,18 +1,24 @@
 # blog-sync
 
-Portable blog content pipeline for the Regolia WordPress site, based on the
-WordPress REST API.
+Portable content pipeline for the Regolia WordPress site, based on the
+WordPress REST API. Works for **blog posts** and **pages** — including page
+templates, which makes it the distribution channel for the four landing
+templates shipped with the theme.
 
-- **`export.mjs`** — pulls all published posts from a WP site, converts the
-  HTML body to Markdown, and writes one `<slug>.md` per post (+ the featured
-  image) into `./content/`. YAML frontmatter carries title, slug, date,
-  excerpt, categories, tags and `featured_image`.
-- **`import.mjs`** — reads `./content/*.md`, uploads each featured image via
-  `/wp/v2/media`, creates/fetches categories & tags, and creates the post as
-  `draft`. Idempotent: existing slugs are skipped unless you pass `--force`.
+- **`export.mjs`** — pulls posts and/or pages from a WP site, converts the
+  HTML body to Markdown, and writes one `<slug>.md` per item (+ the featured
+  image) into `./content/<type>/`. YAML frontmatter carries title, slug,
+  date, excerpt, `featured_image`, plus per-type fields:
+  - **posts**: `categories`, `tags`
+  - **pages**: `template`, `menu_order`, `parent_slug`
+- **`import.mjs`** — reads `./content/<type>/*.md`, uploads each featured
+  image via `/wp/v2/media`, resolves categories/tags/parents, and creates
+  the item as `draft`. Idempotent: existing slugs are skipped unless you
+  pass `--force`.
 
-The content directory is intended to be committed to the repo, so a seed of
-the blog travels with the theme and can be (re)imported into any environment.
+The `content/` directory is intended to be committed to the repo, so a seed
+of the blog **and** of the pages (including the landing templates) travels
+with the theme and can be (re)imported into any environment.
 
 ## Setup
 
@@ -25,27 +31,43 @@ Node ≥ 18 is required (uses native `fetch` + `FormData`).
 
 ## Export (from WordPress → Markdown)
 
-No authentication needed for public posts.
+No authentication needed for public items.
 
 ```bash
+# Posts only (default)
 WP_URL=http://localhost:8090 npm run export
-# or
-WP_URL=http://localhost:8090 node export.mjs --out ./content
-WP_URL=http://localhost:8090 node export.mjs --include-drafts
+
+# Pages only
+WP_URL=http://localhost:8090 node export.mjs --type pages
+
+# Both in one run
+WP_URL=http://localhost:8090 node export.mjs --type all
+
+# Include drafts (requires auth)
+WP_URL=http://localhost:8090 WP_USER=admin WP_APP_PASSWORD="xxxx" \
+  node export.mjs --type all --include-drafts
 ```
 
-Writes into `./content/`:
+Writes into `./content/<type>/`:
 
 ```
 content/
-├── come-assumere-una-colf-nel-2026-guida-completa.md
-├── come-assumere-una-colf-nel-2026-guida-completa.jpg
-├── cassa-colf-cose-e-perche-conviene.md
-├── cassa-colf-cose-e-perche-conviene.jpg
-└── …
+├── posts/
+│   ├── cassa-colf-cose-e-perche-conviene.md
+│   ├── cassa-colf-cose-e-perche-conviene.jpg
+│   ├── come-assumere-una-colf-nel-2026-guida-completa.md
+│   ├── come-assumere-una-colf-nel-2026-guida-completa.jpg
+│   └── …
+└── pages/
+    ├── home.md
+    ├── landing-famiglia.md
+    ├── landing-prezzo.md
+    ├── landing-compliance.md
+    ├── chi-siamo.md
+    └── …
 ```
 
-Each Markdown file looks like:
+Post Markdown file:
 
 ```markdown
 ---
@@ -65,37 +87,68 @@ featured_image: cassa-colf-cose-e-perche-conviene.jpg
 La Cassa Colf è…
 ```
 
+Page Markdown file (note `template`):
+
+```markdown
+---
+title: Home
+slug: home
+date: 2026-04-12T10:02:57Z
+status: publish
+template: template-landing-default.php
+---
+
+(Empty body — the content comes from the page template file.)
+```
+
+Pages can also carry `menu_order` and `parent_slug` in their frontmatter;
+on import, `parent_slug` is resolved to the current parent page ID on the
+target site.
+
 ## Import (Markdown → WordPress, as drafts)
 
 The import requires a WordPress **Application Password**. Create one from
 `Users → Profile → Application Passwords` on the target site and copy it.
 
 ```bash
+# Import posts (default)
 WP_URL=https://regolia.it \
 WP_USER=admin \
 WP_APP_PASSWORD="xxxx xxxx xxxx xxxx xxxx xxxx" \
   npm run import
+
+# Import pages
+WP_URL=https://regolia.it WP_USER=admin WP_APP_PASSWORD="xxxx xxxx" \
+  node import.mjs --type pages
+
+# Import both types in one run
+WP_URL=https://regolia.it WP_USER=admin WP_APP_PASSWORD="xxxx xxxx" \
+  node import.mjs --type all
 ```
 
 Flags:
 
-- `--dir ./content` — override the source directory
-- `--force` — update existing posts (matched by slug) instead of skipping.
+- `--type posts|pages|all` — which subdirectory of `./content/` to import (default: `posts`)
+- `--dir ./content` — override the base content directory
+- `--force` — update existing items (matched by slug) instead of skipping.
   Status is preserved (does **not** flip published → draft).
 - `--dry-run` — parse and log actions without touching the remote site
 
-Posts are created as `status: draft` so a human can review before publishing.
+Items are created as `status: draft` so a human can review before publishing.
 
-### What the importer does per post
+### What the importer does per item
 
-1. `GET /wp/v2/posts?slug=<slug>&status=any&context=edit` — skip if exists
+1. `GET /wp/v2/<type>?slug=<slug>&status=any&context=edit` — skip if exists
    (unless `--force`).
 2. Reads the frontmatter image and uploads it via `POST /wp/v2/media`
    (`Content-Type` + `Content-Disposition: attachment; filename=…`).
-3. Ensures all frontmatter categories and tags exist (creates any missing).
-4. Converts the Markdown body to HTML via `marked`.
-5. `POST /wp/v2/posts` with title, slug, excerpt, content, `featured_media`,
-   `categories`, `tags`, `status=draft`.
+3. For posts: ensures all frontmatter categories and tags exist
+   (creates any missing).
+4. For pages: resolves `parent_slug` → parent ID on the target site and
+   passes `template` + `menu_order` through unchanged.
+5. Converts the Markdown body to HTML via `marked`.
+6. `POST /wp/v2/<type>` with title, slug, excerpt, content, `featured_media`,
+   taxonomy/hierarchy fields, `status=draft`.
 
 ## Regenerating the seed
 
@@ -194,15 +247,26 @@ too.
 tools/blog-sync/
 ├── package.json
 ├── README.md        ← this file
-├── export.mjs       ← pull from WP → Markdown
-├── import.mjs       ← push Markdown → WP as drafts
+├── export.mjs       ← pull from WP → Markdown (posts + pages)
+├── import.mjs       ← push Markdown → WP as drafts (posts + pages)
 ├── lib/
-│   ├── wp-api.mjs   ← minimal REST client (Basic auth)
+│   ├── wp-api.mjs   ← minimal REST client (Basic auth, generic item API)
 │   ├── html-to-md.mjs
 │   └── md-to-html.mjs
-└── content/         ← committed seed (17 posts + cover images)
-    ├── <slug>.md
-    └── <slug>.jpg
+└── content/         ← committed seed
+    ├── posts/       ← 17 blog post markdowns + cover images
+    │   ├── <slug>.md
+    │   └── <slug>.jpg
+    └── pages/       ← home + utility pages + 3 alternative landings
+        ├── home.md
+        ├── landing-famiglia.md
+        ├── landing-prezzo.md
+        ├── landing-compliance.md
+        ├── blog.md
+        ├── chi-siamo.md
+        ├── servizi.md
+        ├── come-funziona.md
+        └── contatti.md
 ```
 
 The `content/` directory is committed with a cleaned-up seed: duplicate

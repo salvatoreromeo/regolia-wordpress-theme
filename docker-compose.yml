@@ -10,6 +10,7 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
+      WP_ENVIRONMENT_TYPE: local
       WORDPRESS_CONFIG_EXTRA: |
         $$host = isset($$_SERVER['HTTP_HOST']) && $$_SERVER['HTTP_HOST'] ? $$_SERVER['HTTP_HOST'] : 'localhost:8090';
         define('WP_HOME',    'http://' . $$host);
