@@ -109,6 +109,7 @@ function regolia_render_landing_switcher(): string {
 		[ 'slug' => 'landing-famiglia',   'label' => 'Famiglia',   'template' => 'template-landing-famiglia.php' ],
 		[ 'slug' => 'landing-prezzo',     'label' => 'Prezzo',     'template' => 'template-landing-prezzo.php' ],
 		[ 'slug' => 'landing-compliance', 'label' => 'Compliance', 'template' => 'template-landing-compliance.php' ],
+		[ 'slug' => 'landing-rischi',     'label' => 'Rischi',     'template' => 'template-landing-rischi.php' ],
 	];
 
 	$current_template = get_page_template_slug( get_queried_object_id() );
