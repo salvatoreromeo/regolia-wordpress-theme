@@ -132,9 +132,21 @@ Flags:
 - `--dir ./content` — override the base content directory
 - `--force` — update existing items (matched by slug) instead of skipping.
   Status is preserved (does **not** flip published → draft).
+- `--interactive` / `-i` — prompt per conflict instead of silently skipping.
+  On each existing slug the importer asks:
+  `[y]es / [n]o / [a]ll / n[o]ne / [q]uit`
+  - `y` update this one
+  - `n` skip this one
+  - `a` update this and every following conflict (unlocks force mode)
+  - `o` skip this and every following conflict
+  - `q` stop the import immediately
 - `--dry-run` — parse and log actions without touching the remote site
 
 Items are created as `status: draft` so a human can review before publishing.
+
+> **Note:** `--interactive` requires a real TTY. Don't pipe answers via
+> `printf | node import.mjs` — Node's readline closes early on piped
+> stdin. Run it from a terminal and type the answers.
 
 ### What the importer does per item
 
@@ -199,16 +211,25 @@ git push
 
 ### Pushing local edits from `content/` back into the dev site
 
+Three strategies depending on how much control you want:
+
 ```bash
-WP_URL=http://localhost:8090 \
-WP_USER=admin \
-WP_APP_PASSWORD="xxxx xxxx" \
+# 1. Surgical: prompt per conflict (recommended for mixed updates)
+WP_URL=http://localhost:8090 WP_USER=admin WP_APP_PASSWORD="xxxx xxxx" \
+  npm run import -- --interactive
+
+# 2. Blind bulk update: replace every matching slug
+WP_URL=http://localhost:8090 WP_USER=admin WP_APP_PASSWORD="xxxx xxxx" \
   npm run import -- --force
+
+# 3. Create-only: skip any existing slug silently
+WP_URL=http://localhost:8090 WP_USER=admin WP_APP_PASSWORD="xxxx xxxx" \
+  npm run import
 ```
 
-The `--force` flag updates existing posts matched by slug (title, content,
-excerpt, featured image) while **preserving their current status** — a
-published post stays published, a draft stays a draft.
+`--force` and the interactive `a` (all) answer update existing items matched
+by slug (title, content, excerpt, featured image) while **preserving their
+current status** — a published item stays published, a draft stays a draft.
 
 ## Environment variables
 

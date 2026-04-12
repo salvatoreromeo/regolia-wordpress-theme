@@ -8,15 +8,24 @@
 //   WP_URL=https://regolia.it WP_USER=admin WP_APP_PASSWORD="xxxx xxxx" node import.mjs
 //   ... node import.mjs --type pages
 //   ... node import.mjs --type all --force
+//   ... node import.mjs --interactive         # prompt per conflict
 //   ... node import.mjs --dry-run
 //
-// By default items with an existing slug are skipped. Use --force to replace
-// (title, content, excerpt, featured image) without changing status.
+// Conflict handling when a slug already exists on the target:
+//   - default: skip silently
+//   - --force: update all (preserves current status)
+//   - --interactive / -i: prompt per item (y/n/a/q)
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import readline from 'node:readline';
+import { stdin as input, stdout as output } from 'node:process';
 import matter from 'gray-matter';
+
+function askQuestion(rl, prompt) {
+  return new Promise((resolve) => rl.question(prompt, resolve));
+}
 
 import { createClient, SUPPORTED_TYPES } from './lib/wp-api.mjs';
 import { markdownToHtml } from './lib/md-to-html.mjs';
@@ -24,12 +33,19 @@ import { markdownToHtml } from './lib/md-to-html.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function parseArgs(argv) {
-  const args = { dir: './content', force: false, dryRun: false, types: ['posts'] };
+  const args = {
+    dir: './content',
+    force: false,
+    dryRun: false,
+    interactive: false,
+    types: ['posts'],
+  };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--dir') args.dir = argv[++i];
     else if (a === '--force') args.force = true;
     else if (a === '--dry-run') args.dryRun = true;
+    else if (a === '--interactive' || a === '-i') args.interactive = true;
     else if (a === '--type') {
       const v = argv[++i];
       if (v === 'all') args.types = [...SUPPORTED_TYPES];
@@ -38,6 +54,29 @@ function parseArgs(argv) {
     else if (a === '--help' || a === '-h') args.help = true;
   }
   return args;
+}
+
+/**
+ * Prompt the user about a conflict. Returns one of:
+ *   'update' — update this one
+ *   'skip'   — skip this one
+ *   'all'    — update this and every following conflict (force mode)
+ *   'none'   — skip this and every following conflict
+ *   'quit'   — stop importing immediately
+ */
+async function promptConflict(rl, slug, existingId) {
+  while (true) {
+    const ans = (await askQuestion(
+      rl,
+      `\n  ? "${slug}" already exists as #${existingId}. Update? [y]es / [n]o / [a]ll / n[o]ne / [q]uit: `,
+    )).trim().toLowerCase();
+    if (ans === 'y' || ans === 'yes' || ans === '') return 'update';
+    if (ans === 'n' || ans === 'no') return 'skip';
+    if (ans === 'a' || ans === 'all') return 'all';
+    if (ans === 'o' || ans === 'none') return 'none';
+    if (ans === 'q' || ans === 'quit') return 'quit';
+    console.log('    (answer with y/n/a/o/q)');
+  }
 }
 
 function mimeFromExt(filename) {
@@ -80,18 +119,18 @@ async function resolveParent(client, parentSlug) {
   return parent ? parent.id : null;
 }
 
-async function importType({ client, type, dir, force, dryRun }) {
+async function importType({ client, type, dir, force, dryRun, interactive, rl, state }) {
   let entries;
   try {
     entries = await fs.readdir(dir);
   } catch {
     console.log(`\n→ ${type}: ${dir} not found, skipping`);
-    return { created: 0, updated: 0, skipped: 0 };
+    return { created: 0, updated: 0, skipped: 0, quit: false };
   }
   const mdFiles = entries.filter((f) => f.endsWith('.md')).sort();
   if (!mdFiles.length) {
     console.log(`\n→ ${type}: no .md files in ${dir}`);
-    return { created: 0, updated: 0, skipped: 0 };
+    return { created: 0, updated: 0, skipped: 0, quit: false };
   }
 
   console.log(`\n→ Importing ${mdFiles.length} ${type} from ${dir}${dryRun ? ' (dry run)' : ''}`);
@@ -108,7 +147,30 @@ async function importType({ client, type, dir, force, dryRun }) {
     const title = fm.title || slug;
 
     const existing = await client.findItemBySlug(type, slug);
-    if (existing && !force) {
+
+    // Decide what to do on conflict
+    let decision = 'create'; // 'create' | 'update' | 'skip'
+    if (existing) {
+      if (state.skipAll) {
+        decision = 'skip';
+      } else if (force || state.updateAll) {
+        decision = 'update';
+      } else if (interactive && !dryRun) {
+        const choice = await promptConflict(rl, slug, existing.id);
+        if (choice === 'quit') {
+          console.log('  ✋ Import stopped by user.');
+          return { created, updated, skipped, quit: true };
+        }
+        if (choice === 'all') { state.updateAll = true; decision = 'update'; }
+        else if (choice === 'none') { state.skipAll = true; decision = 'skip'; }
+        else if (choice === 'update') decision = 'update';
+        else decision = 'skip';
+      } else {
+        decision = 'skip';
+      }
+    }
+
+    if (existing && decision === 'skip') {
       console.log(`  • ${slug} — exists (#${existing.id}), skipping`);
       skipped++;
       continue;
@@ -168,7 +230,7 @@ async function importType({ client, type, dir, force, dryRun }) {
       continue;
     }
 
-    if (existing && force) {
+    if (existing && decision === 'update') {
       // Preserve existing status instead of forcing draft
       delete payload.status;
       await client.updateItem(type, existing.id, payload);
@@ -181,13 +243,13 @@ async function importType({ client, type, dir, force, dryRun }) {
     }
   }
 
-  return { created, updated, skipped };
+  return { created, updated, skipped, quit: false };
 }
 
 async function main() {
   const args = parseArgs(process.argv);
   if (args.help) {
-    console.log('Usage: WP_URL=<url> WP_USER=<user> WP_APP_PASSWORD=<pwd> node import.mjs [--type posts|pages|all] [--dir ./content] [--force] [--dry-run]');
+    console.log('Usage: WP_URL=<url> WP_USER=<user> WP_APP_PASSWORD=<pwd> node import.mjs [--type posts|pages|all] [--dir ./content] [--force] [--interactive] [--dry-run]');
     process.exit(0);
   }
 
@@ -202,22 +264,42 @@ async function main() {
   const baseDir = path.resolve(__dirname, args.dir);
   const client = createClient({ baseUrl, user, password });
 
-  console.log(`Importing into ${baseUrl} (types: ${args.types.join(', ')}${args.dryRun ? ', dry run' : ''})`);
+  const flags = [];
+  if (args.force) flags.push('force');
+  if (args.interactive) flags.push('interactive');
+  if (args.dryRun) flags.push('dry run');
+  const flagStr = flags.length ? `, ${flags.join(', ')}` : '';
+  console.log(`Importing into ${baseUrl} (types: ${args.types.join(', ')}${flagStr})`);
 
-  let total = { created: 0, updated: 0, skipped: 0 };
+  // Shared "all / none" decision across the run and across types
+  const state = { updateAll: false, skipAll: false };
 
-  for (const type of args.types) {
-    const typeDir = path.join(baseDir, type);
-    const result = await importType({
-      client,
-      type,
-      dir: typeDir,
-      force: args.force,
-      dryRun: args.dryRun,
-    });
-    total.created += result.created;
-    total.updated += result.updated;
-    total.skipped += result.skipped;
+  // Single readline instance shared across types (and closed at the end)
+  const rl = args.interactive && !args.dryRun
+    ? readline.createInterface({ input, output })
+    : null;
+
+  const total = { created: 0, updated: 0, skipped: 0 };
+  try {
+    for (const type of args.types) {
+      const typeDir = path.join(baseDir, type);
+      const result = await importType({
+        client,
+        type,
+        dir: typeDir,
+        force: args.force,
+        dryRun: args.dryRun,
+        interactive: args.interactive,
+        rl,
+        state,
+      });
+      total.created += result.created;
+      total.updated += result.updated;
+      total.skipped += result.skipped;
+      if (result.quit) break;
+    }
+  } finally {
+    if (rl) rl.close();
   }
 
   console.log(`\nAll done. created=${total.created} updated=${total.updated} skipped=${total.skipped}`);
