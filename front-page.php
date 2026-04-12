@@ -172,7 +172,7 @@ get_header();
             <div class="rg-step">
                 <div class="rg-step__num">1</div>
                 <div class="rg-step__icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/><path d="M4 21c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/steps/step-1-aggiungi.webp' ) ); ?>" alt="" width="160" height="160" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-step__title">Aggiungi il dipendente</h3>
                 <p class="rg-step__desc">Inserisci nome, tipo di contratto e ore settimanali. Pensiamo noi al resto.</p>
@@ -183,7 +183,7 @@ get_header();
             <div class="rg-step">
                 <div class="rg-step__num">2</div>
                 <div class="rg-step__icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v5h5"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/steps/step-2-firma.webp' ) ); ?>" alt="" width="160" height="160" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-step__title">Firma il contratto</h3>
                 <p class="rg-step__desc">Contratto CCNL precompilato, firma digitale in-app. Valido legalmente.</p>
@@ -194,7 +194,7 @@ get_header();
             <div class="rg-step">
                 <div class="rg-step__num">3</div>
                 <div class="rg-step__icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M15 8.5a4.5 4.5 0 00-4-.5c-2 .8-3 3-2.5 5s2.5 3.5 4.5 3 3-2"/><path d="M8 11h5"/><path d="M8 14h4"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/steps/step-3-paga.webp' ) ); ?>" alt="" width="160" height="160" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-step__title">Paga con un tap</h3>
                 <p class="rg-step__desc">Cedolino calcolato automaticamente. Approvi e paghi direttamente dall'app.</p>
@@ -217,7 +217,7 @@ get_header();
 
             <div class="rg-feature-card">
                 <div class="rg-feature-card__icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M15 8.5a4.5 4.5 0 00-4-.5c-2 .8-3 3-2.5 5s2.5 3.5 4.5 3 3-2"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/features/cedolini-automatici.webp' ) ); ?>" alt="" width="128" height="128" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-feature-card__title">Cedolini automatici</h3>
                 <p class="rg-feature-card__desc">Calcolo automatico ogni mese, con straordinari, ferie e TFR già inclusi.</p>
@@ -225,7 +225,7 @@ get_header();
 
             <div class="rg-feature-card">
                 <div class="rg-feature-card__icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V7z"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/features/compliance-inps.webp' ) ); ?>" alt="" width="128" height="128" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-feature-card__title">Compliance INPS / INAIL</h3>
                 <p class="rg-feature-card__desc">Comunicazioni obbligatorie inviate in automatico. Zero sanzioni garantite.</p>
@@ -233,7 +233,7 @@ get_header();
 
             <div class="rg-feature-card">
                 <div class="rg-feature-card__icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v5h5"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/features/contratti-digitali.webp' ) ); ?>" alt="" width="128" height="128" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-feature-card__title">Contratti digitali</h3>
                 <p class="rg-feature-card__desc">Genera, firma e archivia contratti CCNL in pochi secondi, dal telefono.</p>
@@ -241,7 +241,7 @@ get_header();
 
             <div class="rg-feature-card">
                 <div class="rg-feature-card__icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 10h18"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/features/pagamenti-integrati.webp' ) ); ?>" alt="" width="128" height="128" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-feature-card__title">Pagamenti integrati</h3>
                 <p class="rg-feature-card__desc">Bonifico diretto al dipendente con un tap. Tracciabilità completa.</p>
@@ -249,7 +249,7 @@ get_header();
 
             <div class="rg-feature-card">
                 <div class="rg-feature-card__icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v10a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2z"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/features/supporto-esperto.webp' ) ); ?>" alt="" width="128" height="128" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-feature-card__title">Supporto esperto</h3>
                 <p class="rg-feature-card__desc">Chat con consulenti del lavoro specializzati in collaboratori domestici.</p>
@@ -257,7 +257,7 @@ get_header();
 
             <div class="rg-feature-card">
                 <div class="rg-feature-card__icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 11h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+                    <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/features/gestione-ferie.webp' ) ); ?>" alt="" width="128" height="128" loading="lazy" decoding="async">
                 </div>
                 <h3 class="rg-feature-card__title">Gestione ferie e assenze</h3>
                 <p class="rg-feature-card__desc">Calendario condiviso, approvazioni e conteggio automatico dei giorni.</p>

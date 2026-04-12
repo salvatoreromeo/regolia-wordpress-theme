@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+
+# Claude Code workspace (agents, worktrees, memory, skills cache)
+.claude/
+
+# Designer reference images (not theme assets)
+assets/design images/

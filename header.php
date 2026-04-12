@@ -36,7 +36,14 @@ defined( 'ABSPATH' ) || exit;
 				'fallback_cb'    => '__return_false',
 				'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 			] );
-			?>
+
+			$posts_page_id = (int) get_option( 'page_for_posts' );
+			if ( $posts_page_id ) :
+				?>
+				<a href="<?php echo esc_url( get_permalink( $posts_page_id ) ); ?>" class="primary-nav__blog-link">
+					<?php echo esc_html( get_the_title( $posts_page_id ) ); ?>
+				</a>
+			<?php endif; ?>
 		</nav>
 
 		<a href="#waitlist" class="header-cta btn btn-primary">
