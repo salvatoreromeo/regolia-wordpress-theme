@@ -1,0 +1,19 @@
+{
+  "name": "regolia-blog-sync",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Export/import Regolia blog posts via WordPress REST API (Markdown + images)",
+  "scripts": {
+    "export": "node export.mjs",
+    "import": "node import.mjs"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.7",
+    "turndown": "^7.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
