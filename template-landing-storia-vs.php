@@ -308,7 +308,7 @@ get_header();
                 class="rg-btn rg-btn--primary rg-btn--lg js-focus-email-input"
                 data-target-input="#rg-waitlist-email"
             >
-                Sii Marco
+                Scegli Regolia
             </button>
         </div>
 
@@ -342,7 +342,7 @@ get_header();
                     autocomplete="email"
                 >
                 <button type="submit" class="rg-btn rg-btn--primary rg-btn--lg">
-                    Sii Marco &rarr;
+                    Scegli Regolia &rarr;
                 </button>
             </div>
             <p class="rg-waitlist__note">
