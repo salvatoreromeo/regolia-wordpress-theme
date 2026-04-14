@@ -177,6 +177,24 @@ ul, ol { list-style: none; }
   flex-shrink: 0;
 }
 
+.site-logo__mark {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+  display: block;
+}
+
+.site-logo__text {
+  line-height: 1;
+}
+
+.footer-brand .site-logo__mark {
+  background: var(--clr-white);
+  border-radius: var(--radius-md);
+  padding: 0.2rem;
+}
+
+
 .rg-logo-mark {
   display: inline-flex;
   align-items: center;

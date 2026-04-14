@@ -14,7 +14,15 @@ defined( 'ABSPATH' ) || exit;
 		<div class="footer-grid">
 			<div class="footer-brand">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" aria-label="<?php bloginfo( 'name' ); ?> — Home">
-					Regolia
+					<img
+						src="<?php echo esc_url( get_theme_file_uri( 'assets/images/logo/regolia-logo-square.png' ) ); ?>"
+						alt=""
+						width="40"
+						height="40"
+						class="site-logo__mark"
+						decoding="async"
+					>
+					<span class="site-logo__text">Regolia</span>
 				</a>
 				<p><?php esc_html_e( 'La soluzione online per gestire colf, badanti, baby sitter e dog sitter — semplice, corretta e senza pensieri.', 'regolia' ); ?></p>
 			</div>

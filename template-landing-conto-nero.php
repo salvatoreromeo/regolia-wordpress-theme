@@ -34,10 +34,10 @@ get_header();
             nessuno aveva previsto. Il contatore parte da zero.
         </p>
         <div class="rg-story__counter rg-story__counter--start">
-            <span class="rg-story__counter-label">Conto corrente del rapporto</span>
-            <span class="rg-story__counter-value">€&nbsp;0</span>
+            <span class="rg-story__counter-label">Spesa al giorno 0</span>
+            <span class="rg-story__counter-value" data-counter-target="0" data-counter-from="0">€&nbsp;0</span>
         </div>
-        <a href="#capitolo-1" class="rg-btn rg-btn--ghost rg-btn--lg">
+        <a href="#capitolo-1" class="rg-btn rg-btn--ghost rg-btn--lg rg-story__opening-cta">
             Comincia a contare &darr;
         </a>
     </div>
@@ -84,8 +84,11 @@ get_header();
 
         <div class="rg-story__counter">
             <span class="rg-story__counter-label">Totale dopo il capitolo 1</span>
-            <span class="rg-story__counter-value">&minus;&nbsp;€&nbsp;720 <small>risparmiati</small></span>
+            <span class="rg-story__counter-value" data-counter-target="720" data-counter-from="0">€0 <small>risparmiati</small></span>
         </div>
+        <a href="#capitolo-2" class="rg-story__teaser-cta">
+            Ma questo è solo l'inizio. Vai avanti &rarr;
+        </a>
 
     </div>
 </section>
@@ -134,8 +137,11 @@ get_header();
 
         <div class="rg-story__counter">
             <span class="rg-story__counter-label">Totale dopo il capitolo 2</span>
-            <span class="rg-story__counter-value">€&nbsp;2.080</span>
+            <span class="rg-story__counter-value" data-counter-target="2080" data-counter-from="720" data-counter-blink="danger" data-counter-final="spesi">€&nbsp;720 <strong class="rg-story__counter-value-highlight">SPESI</strong></span>
         </div>
+        <a href="#capitolo-3" class="rg-story__teaser-cta">
+            Quando sembra finita, cambia tutto. Continua &rarr;
+        </a>
 
     </div>
 </section>
@@ -183,8 +189,11 @@ get_header();
 
         <div class="rg-story__counter">
             <span class="rg-story__counter-label">Totale dopo il capitolo 3</span>
-            <span class="rg-story__counter-value">€&nbsp;5.280</span>
+            <span class="rg-story__counter-value" data-counter-target="5280" data-counter-from="2080" data-counter-blink="danger" data-counter-final="spesi">€2080 <strong class="rg-story__counter-value-highlight">SPESI</strong></span>
         </div>
+        <a href="#capitolo-4" class="rg-story__teaser-cta">
+            Il pezzo pi&ugrave; pesante deve ancora arrivare. Avanti &rarr;
+        </a>
 
     </div>
 </section>
@@ -230,8 +239,11 @@ get_header();
 
         <div class="rg-story__counter">
             <span class="rg-story__counter-label">Totale dopo il capitolo 4</span>
-            <span class="rg-story__counter-value">€&nbsp;12.500</span>
+            <span class="rg-story__counter-value" data-counter-target="12500" data-counter-from="5280" data-counter-blink="danger" data-counter-final="spesi">€5280 <strong class="rg-story__counter-value-highlight">SPESI</strong></span>
         </div>
+        <a href="#il-conto" class="rg-story__teaser-cta">
+            C'&egrave; ancora un ultimo passaggio. Scoprilo &rarr;
+        </a>
 
     </div>
 </section>
@@ -239,7 +251,7 @@ get_header();
 <!-- ═══════════════════════════════════════
      IL CONTO — BIG COMPARE
      ═══════════════════════════════════════ -->
-<section class="rg-story__ledger">
+<section class="rg-story__ledger" id="il-conto">
     <div class="rg-container rg-story__container">
 
         <div class="rg-story__ledger-header">
@@ -251,7 +263,7 @@ get_header();
 
             <div class="rg-story__compare-card rg-story__compare-card--bad">
                 <span class="rg-story__compare-label">La via di Luca</span>
-                <span class="rg-story__compare-number">€&nbsp;12.500</span>
+                <span class="rg-story__compare-number rg-story__counter-value" data-counter-target="12500" data-counter-from="12500" data-counter-blink="danger">€&nbsp;12.500</span>
                 <ul class="rg-story__compare-list">
                     <li>Infortunio a carico suo</li>
                     <li>Contributi omessi + sanzione INPS</li>
@@ -266,7 +278,7 @@ get_header();
 
             <div class="rg-story__compare-card rg-story__compare-card--good">
                 <span class="rg-story__compare-label">La via di Regolia</span>
-                <span class="rg-story__compare-number">€&nbsp;720</span>
+                <span class="rg-story__compare-number rg-story__counter-value" data-counter-target="720" data-counter-from="0">€&nbsp;720</span>
                 <ul class="rg-story__compare-list">
                     <li>Contratto CCNL firmato digitalmente</li>
                     <li>INPS versati entro i termini, ogni trimestre</li>
@@ -281,9 +293,18 @@ get_header();
         </div>
 
         <p class="rg-story__ledger-kicker">
-            Luca ha &ldquo;risparmiato&rdquo; €720 di Regolia.
-            Gli è costato <strong>17 volte tanto</strong>.
+            Luca poteva &ldquo;risparmiare&rdquo; €30 al mese di servizio Regolia.
+            Ma gli è costato <strong>oltre 12.000 euro</strong> e tantissimo stress.
         </p>
+        <div class="rg-story__ledger-cta">
+            <button
+                type="button"
+                class="rg-btn rg-btn--primary rg-btn--lg js-focus-email-input"
+                data-target-input="#rg-waitlist-email"
+            >
+                Evita stress e rischi
+            </button>
+        </div>
 
     </div>
 </section>
@@ -295,7 +316,7 @@ get_header();
     <div class="rg-container rg-story__container">
         <h2 class="rg-story__finale-title">
             Oggi è il giorno 1<br>
-            <em>del tuo</em> rapporto.
+            per stare <em>sereni e senza rischi</em>.
         </h2>
         <p class="rg-story__finale-sub">
             A partire da domani, pensiamo a tutto noi. Contratto, buste paga,
@@ -308,6 +329,7 @@ get_header();
             <div class="rg-waitlist__fields">
                 <input
                     type="email"
+                    id="rg-waitlist-email"
                     name="email"
                     class="rg-input"
                     placeholder="La tua email"
@@ -319,12 +341,214 @@ get_header();
                 </button>
             </div>
             <p class="rg-waitlist__note">
-                Nessun addebito fino all'attivazione del servizio.
+                Inizia inserendo la tua email ed elimina tutti i rischi in soli 5 minuti.
             </p>
         </form>
     </div>
 </section>
 
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var focusEmailButtons = Array.prototype.slice.call(document.querySelectorAll('.js-focus-email-input'));
+    focusEmailButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var targetSelector = button.getAttribute('data-target-input');
+            var targetInput = targetSelector ? document.querySelector(targetSelector) : null;
+            if (!targetInput) {
+                return;
+            }
+
+            targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            window.setTimeout(function () {
+                targetInput.focus({ preventScroll: true });
+            }, 220);
+        });
+    });
+
+    var counters = Array.prototype.slice.call(document.querySelectorAll('[data-counter-target]'));
+
+    if (!counters.length) {
+        return;
+    }
+
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var formatter = new Intl.NumberFormat('it-IT');
+    var animationDelay = 220;
+    var nextIndexToRun = 0;
+    var isRunning = false;
+    var inViewMap = new WeakMap();
+
+    var renderCounter = function (counter, value) {
+        var target = Number(counter.getAttribute('data-counter-target')) || 0;
+        var numericValue = Math.max(0, Math.round(value));
+        var numberText = '€\u00A0' + formatter.format(numericValue);
+        var suffix = counter.getAttribute('data-counter-suffix') || '';
+
+        counter.innerHTML = numberText + suffix;
+    };
+
+    var animateCounter = function (counter) {
+        var target = Number(counter.getAttribute('data-counter-target')) || 0;
+        var previousCounter = counters[nextIndexToRun - 1];
+        var fallbackFrom = previousCounter ? (Number(previousCounter.getAttribute('data-counter-target')) || 0) : 0;
+        var hasExplicitFrom = counter.hasAttribute('data-counter-from');
+        var from = hasExplicitFrom ? Number(counter.getAttribute('data-counter-from')) : fallbackFrom;
+
+        if (Number.isNaN(from)) {
+            from = fallbackFrom;
+        }
+
+        var originalHTML = counter.innerHTML;
+        var numberMatch = originalHTML.match(/^[^0-9]*[0-9][0-9\.\,\s\u00A0]*/);
+        var suffix = '';
+
+        if (numberMatch && originalHTML.length > numberMatch[0].length) {
+            suffix = originalHTML.slice(numberMatch[0].length);
+        }
+
+        counter.setAttribute('data-counter-suffix', suffix);
+        counter.dataset.counterAnimated = 'true';
+        counter.classList.remove('is-final-spesi');
+
+        if (prefersReducedMotion || target === from) {
+            renderCounter(counter, target);
+            if (counter.getAttribute('data-counter-final') === 'spesi') {
+                counter.classList.add('is-final-spesi');
+            }
+            return Promise.resolve();
+        }
+
+        var isGreenCounting = target === 720;
+        var isDangerCounting = target > 0 && target !== 720;
+
+        if (isGreenCounting) {
+            counter.classList.add('is-counting-good');
+        } else if (isDangerCounting) {
+            counter.classList.add('is-counting-danger');
+        }
+
+        var duration = 850;
+        var start = performance.now();
+
+        return new Promise(function (resolve) {
+            var step = function (now) {
+                var progress = Math.min((now - start) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3);
+                var currentValue = from + (target - from) * eased;
+                renderCounter(counter, currentValue);
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                    return;
+                }
+
+                renderCounter(counter, target);
+                counter.classList.remove('is-counting-good');
+                counter.classList.remove('is-counting-danger');
+                if (counter.getAttribute('data-counter-final') === 'spesi') {
+                    counter.classList.add('is-final-spesi');
+                }
+                resolve();
+            };
+
+            window.requestAnimationFrame(step);
+        });
+    };
+
+    var runQueue = function () {
+        if (isRunning) {
+            return;
+        }
+
+        if (nextIndexToRun >= counters.length) {
+            return;
+        }
+
+        var currentCounter = counters[nextIndexToRun];
+        if (!inViewMap.get(currentCounter)) {
+            return;
+        }
+
+        isRunning = true;
+        animateCounter(currentCounter).then(function () {
+            nextIndexToRun += 1;
+            isRunning = false;
+            window.setTimeout(runQueue, animationDelay);
+        });
+    };
+
+    var markCountersUpTo = function (counter) {
+        var targetIndex = counters.indexOf(counter);
+        if (targetIndex === -1) {
+            return;
+        }
+
+        for (var i = 0; i <= targetIndex; i += 1) {
+            if (counters[i].dataset.counterAnimated !== 'true') {
+                inViewMap.set(counters[i], true);
+            }
+        }
+    };
+
+    var triggerCountersForHash = function (hash) {
+        if (!hash) {
+            return;
+        }
+
+        var target = document.querySelector(hash);
+        if (!target) {
+            return;
+        }
+
+        var sectionCounter = target.querySelector('[data-counter-target]');
+        if (!sectionCounter) {
+            return;
+        }
+
+        markCountersUpTo(sectionCounter);
+        runQueue();
+    };
+
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting || entry.target.dataset.counterAnimated === 'true') {
+                return;
+            }
+            inViewMap.set(entry.target, true);
+            observer.unobserve(entry.target);
+            runQueue();
+        });
+    }, {
+        threshold: 0.55,
+        rootMargin: '0px 0px -8% 0px'
+    });
+
+    counters.forEach(function (counter) {
+        observer.observe(counter);
+    });
+
+    var teaserLinks = Array.prototype.slice.call(document.querySelectorAll('.rg-story__teaser-cta[href^="#"]'));
+    teaserLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+            var hash = link.getAttribute('href');
+            window.setTimeout(function () {
+                triggerCountersForHash(hash);
+            }, 120);
+        });
+    });
+
+    if (window.location.hash) {
+        window.setTimeout(function () {
+            triggerCountersForHash(window.location.hash);
+        }, 120);
+    }
+
+    window.addEventListener('hashchange', function () {
+        triggerCountersForHash(window.location.hash);
+    });
+});
+</script>
 
 <?php get_footer(); ?>

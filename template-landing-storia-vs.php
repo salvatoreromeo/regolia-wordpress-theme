@@ -165,7 +165,7 @@ get_header();
                     <p>
                         Stesso imprevisto in casa di Luca. Stessa visita,
                         stessi giorni fermi. Ma senza contratto <strong>niente
-                        INAIL</strong>, e le spese le tira fuori lui: visita,
+                        INAIL</strong>, e le spese le tira fuori lui <strong>per legge</strong>: visita,
                         farmaci, i giorni non lavorati.
                     </p>
                     <p>

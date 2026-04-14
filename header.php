@@ -24,7 +24,15 @@ defined( 'ABSPATH' ) || exit;
 	<div class="container">
 
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" aria-label="<?php bloginfo( 'name' ); ?> — Home">
-			Regolia
+			<img
+				src="<?php echo esc_url( get_theme_file_uri( 'assets/images/logo/regolia-logo-square.png' ) ); ?>"
+				alt=""
+				width="40"
+				height="40"
+				class="site-logo__mark"
+				decoding="async"
+			>
+			<span class="site-logo__text">Regolia</span>
 		</a>
 
 		<nav class="primary-nav" id="primary-nav" role="navigation" aria-label="<?php esc_attr_e( 'Menu principale', 'regolia' ); ?>">
