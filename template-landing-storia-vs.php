@@ -221,7 +221,7 @@ get_header();
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
-                    Totale 24 mesi: <strong>€720</strong> · + detrazioni
+                    Sempre <strong>€30/mese</strong> · + detrazioni
                 </span>
             </div>
 
@@ -247,7 +247,7 @@ get_header();
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
-                    Totale 24 mesi: <strong>oltre €12.000</strong> · + stress
+                    A fine storia: <strong>oltre €12.000</strong> · in un colpo
                 </span>
             </div>
 
@@ -271,7 +271,7 @@ get_header();
 
             <div class="rg-story__compare-card rg-story__compare-card--good">
                 <span class="rg-story__compare-label">La via di Marco</span>
-                <span class="rg-story__compare-number">€&nbsp;720</span>
+                <span class="rg-story__compare-number">€&nbsp;30<small>/mese</small></span>
                 <ul class="rg-story__compare-list">
                     <li>Contratto CCNL firmato digitalmente</li>
                     <li>INPS versati nei termini, ogni trimestre</li>
@@ -279,7 +279,7 @@ get_header();
                     <li>Copertura INAIL attiva dal giorno uno</li>
                 </ul>
                 <p class="rg-story__compare-foot">
-                    €30 al mese per due anni. Serenità inclusa.
+                    Sempre €30, ogni mese. Serenità inclusa.
                 </p>
             </div>
 
