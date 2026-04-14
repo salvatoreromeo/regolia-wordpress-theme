@@ -93,13 +93,12 @@ get_header();
                 <div class="rg-storia-vs__side-text">
                     <p>
                         Anche Luca comincia martedì con Anna. Stesse ore,
-                        stessa paga oraria. Si accordano al volo:
+                        stessa paga oraria. Si accordano a parole:
                         pagamento in contanti ogni venerdì, niente contratto.
                     </p>
                     <p>
-                        <em>&ldquo;A chi vuoi che interessi?&rdquo;</em>
-                        Luca si sente furbo: si tiene in tasca i €30 al mese
-                        di Regolia.
+                        Lo fanno in tanti. Per Luca i €30 al mese di Regolia
+                        possono restare in tasca: niente di cui preoccuparsi.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
@@ -237,13 +236,13 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Due anni dopo, a Luca le sorprese non sono finite.
-                        Tra una richiesta di arretrati e una verifica INPS,
-                        ha messo in conto più di €12.000.
+                        Due anni dopo, a Luca arrivano un paio di sorprese
+                        in più: una richiesta di arretrati e una verifica
+                        INPS. Tutto sommato, parliamo di oltre €12.000.
                     </p>
                     <p>
-                        Niente detrazioni nel 730. E tanto stress: ogni
-                        raccomandata in buca ora gli fa paura.
+                        Niente detrazioni nel 730. E un pensiero in più
+                        ogni volta che apre la cassetta della posta.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
