@@ -29,8 +29,8 @@ get_header();
             Finché non costa <em>troppo</em>.
         </h1>
         <p class="rg-story__lede">
-            Marco ha scelto <strong>Regolia</strong>.
-            Luca ha fatto <strong>&ldquo;a voce&rdquo;</strong>.
+            Marco ha scelto <strong>Regolia</strong>.<br>
+            Luca ha fatto <strong>&ldquo;come al solito&rdquo;</strong>.<br>
             Stesso punto di partenza, stesse ore, stessa paga.
             Due finali molto diversi.
         </p>
@@ -81,7 +81,7 @@ get_header();
             </div>
 
             <div class="rg-storia-vs__side rg-storia-vs__side--luca">
-                <span class="rg-storia-vs__side-label">Luca · a voce</span>
+                <span class="rg-storia-vs__side-label">Luca · come al solito</span>
                 <figure class="rg-storia-vs__side-scene">
                     <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/storytelling/luca-01-scelta.webp' ) ); ?>"
                          alt=""
@@ -153,7 +153,7 @@ get_header();
             </div>
 
             <div class="rg-storia-vs__side rg-storia-vs__side--luca">
-                <span class="rg-storia-vs__side-label">Luca · a voce</span>
+                <span class="rg-storia-vs__side-label">Luca · come al solito</span>
                 <figure class="rg-storia-vs__side-scene">
                     <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/storytelling/luca-02-imprevisto.webp' ) ); ?>"
                          alt=""
@@ -226,7 +226,7 @@ get_header();
             </div>
 
             <div class="rg-storia-vs__side rg-storia-vs__side--luca">
-                <span class="rg-storia-vs__side-label">Luca · a voce</span>
+                <span class="rg-storia-vs__side-label">Luca · come al solito</span>
                 <figure class="rg-storia-vs__side-scene">
                     <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/storytelling/luca-03-bilancio.webp' ) ); ?>"
                          alt=""
