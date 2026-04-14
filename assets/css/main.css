@@ -832,6 +832,15 @@ ul, ol { list-style: none; }
   letter-spacing: -0.02em;
   color: var(--clr-white);
 }
+.rg-story__counter-value.is-counting-good {
+  color: var(--clr-mint);
+}
+.rg-story__counter-value.is-counting-danger {
+  color: var(--clr-danger);
+}
+.rg-story__counter-value.is-final-spesi {
+  color: #f5bcbc;
+}
 .rg-story__counter-value small {
   display: inline-block;
   margin-left: var(--space-2);
@@ -844,6 +853,25 @@ ul, ol { list-style: none; }
 .rg-story__counter--start { background: var(--clr-brand-800); }
 .rg-story__counter--start .rg-story__counter-value { color: var(--clr-mint); }
 .rg-story__counter--start .rg-story__counter-label { color: var(--clr-brand-300); }
+.rg-story__opening-cta {
+  display: block;
+  width: fit-content;
+  margin: var(--space-5) auto 0;
+}
+.rg-story__teaser-cta {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--clr-brand-700);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(13, 107, 79, 0.35);
+}
+.rg-story__teaser-cta:hover {
+  color: var(--clr-brand-800);
+  border-bottom-color: rgba(13, 107, 79, 0.6);
+}
 
 /* Chapter */
 .rg-story__chapter {
@@ -899,6 +927,10 @@ ul, ol { list-style: none; }
 .rg-story__chapter-inner > .rg-story__counter {
   grid-column: 1 / -1;
   margin: var(--space-8) auto 0;
+}
+.rg-story__chapter-inner > .rg-story__teaser-cta {
+  grid-column: 1 / -1;
+  justify-self: center;
 }
 .rg-story__chapter-body {
   display: contents;
@@ -1028,6 +1060,15 @@ ul, ol { list-style: none; }
   margin: 0 auto;
 }
 .rg-story__ledger-kicker strong { color: var(--clr-mint); }
+.rg-story__ledger-cta {
+  margin-top: var(--space-6);
+}
+.rg-story__ledger-cta .rg-btn--primary {
+  box-shadow: 0 0 0 1px rgba(10, 79, 58, 0.62), 0 14px 34px rgba(255, 255, 255, 0.3);
+}
+.rg-story__ledger-cta .rg-btn--primary:hover {
+  box-shadow: 0 0 0 1px rgba(10, 79, 58, 0.74), 0 18px 42px rgba(255, 255, 255, 0.4);
+}
 
 /* Finale */
 .rg-story__finale {
@@ -1060,6 +1101,159 @@ ul, ol { list-style: none; }
   .rg-story__chapter-text { text-align: left; }
   .rg-story__compare { grid-template-columns: 1fr; }
   .rg-story__compare-vs { padding: var(--space-4) 0; }
+}
+
+/* ══════════════════════════════════════
+   STORIA VS — parallel comparison (Marco | Luca)
+   Split-screen variant used by template-landing-storia-vs.php.
+   Reuses .rg-story__chapter / ledger / finale primitives; adds
+   its own container + 2-column split + side cards.
+   ══════════════════════════════════════ */
+.rg-storia-vs__container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.rg-storia-vs__chapter-header {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+.rg-storia-vs__chapter-tag {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  background: var(--clr-brand-50);
+  color: var(--clr-brand-700);
+  border-radius: var(--radius-full);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-right: var(--space-3);
+}
+.rg-storia-vs__chapter-time {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-warm-500);
+  letter-spacing: 0.04em;
+}
+.rg-storia-vs__chapter-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  color: var(--clr-warm-900);
+  margin-top: var(--space-3);
+  line-height: 1.15;
+}
+
+.rg-storia-vs__split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+.rg-storia-vs__side {
+  padding: var(--space-8);
+  border-radius: var(--radius-2xl);
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+.rg-storia-vs__side--marco {
+  background: var(--clr-brand-50);
+  border-color: var(--clr-brand-100);
+}
+.rg-storia-vs__side--luca {
+  background: var(--clr-warm-100);
+  border-color: var(--clr-warm-200);
+}
+
+.rg-storia-vs__side-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.rg-storia-vs__side--marco .rg-storia-vs__side-label {
+  color: var(--clr-brand-700);
+}
+.rg-storia-vs__side--luca .rg-storia-vs__side-label {
+  color: var(--clr-warm-500);
+}
+.rg-storia-vs__side-label::before {
+  content: '';
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+.rg-storia-vs__side-scene {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin: var(--space-4) 0 var(--space-5);
+  background: var(--clr-white);
+  border: 1px solid rgba(10, 79, 58, 0.06);
+}
+.rg-storia-vs__side-scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.rg-storia-vs__side-text {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--clr-warm-600);
+  flex: 1;
+}
+.rg-storia-vs__side-text p { margin-bottom: var(--space-3); }
+.rg-storia-vs__side-text p:last-child { margin-bottom: 0; }
+.rg-storia-vs__side-text strong { color: var(--clr-warm-900); }
+
+.rg-storia-vs__side-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding: var(--space-3) var(--space-5);
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  align-self: flex-start;
+}
+.rg-storia-vs__side-pill strong {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+}
+.rg-storia-vs__side--marco .rg-storia-vs__side-pill {
+  background: var(--clr-brand-700);
+  color: var(--clr-white);
+}
+.rg-storia-vs__side--marco .rg-storia-vs__side-pill strong {
+  color: var(--clr-mint);
+}
+.rg-storia-vs__side--luca .rg-storia-vs__side-pill {
+  background: var(--clr-warm-900);
+  color: var(--clr-warm-300);
+}
+.rg-storia-vs__side--luca .rg-storia-vs__side-pill strong {
+  color: var(--clr-amber);
+}
+
+@media (max-width: 900px) {
+  .rg-storia-vs__split { grid-template-columns: 1fr; gap: var(--space-6); }
+  .rg-storia-vs__side { padding: var(--space-6); }
 }
 
 /* ══════════════════════════════════════
@@ -1360,6 +1554,10 @@ ul, ol { list-style: none; }
   flex-wrap: wrap;
 }
 
+.rg-story__counter-value-highlight {
+  margin-left: var(--space-2);
+}
+
 .rg-input {
   flex: 1;
   min-width: 0;
@@ -1368,15 +1566,15 @@ ul, ol { list-style: none; }
   font-size: 1rem;
   border: 1.5px solid rgba(255,255,255,.3);
   border-radius: var(--radius-xl);
-  background: rgba(255,255,255,.12);
-  color: var(--clr-white);
+  background: rgba(255,255,255,.9);
+  color: var(--clr-black);
   outline: none;
   transition: border-color var(--transition), background var(--transition);
 }
-.rg-input::placeholder { color: rgba(255,255,255,.5); }
+.rg-input::placeholder { color: rgba(109, 109, 109, 0.5); }
 .rg-input:focus {
   border-color: rgba(255,255,255,.7);
-  background: rgba(255,255,255,.18);
+  background: rgba(255, 245, 245, 0.18);
 }
 
 .rg-waitlist__fields .rg-btn--primary {
@@ -1396,6 +1594,12 @@ ul, ol { list-style: none; }
   opacity: 0.6;
 }
 .rg-waitlist__privacy a { text-decoration: underline; }
+
+.rg-waitlist__note {
+  margin-top: var(--space-6);
+  font-size: 0.8125rem;
+  color: var(--clr-warm-400);
+}
 
 /* ══════════════════════════════════════
    FOOTER

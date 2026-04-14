@@ -111,6 +111,7 @@ function regolia_render_landing_switcher(): string {
 		[ 'slug' => 'landing-compliance', 'label' => 'Compliance', 'template' => 'template-landing-compliance.php' ],
 		[ 'slug' => 'landing-rischi',     'label' => 'Rischi',     'template' => 'template-landing-rischi.php' ],
 		[ 'slug' => 'landing-conto-nero', 'label' => 'Storia',     'template' => 'template-landing-conto-nero.php' ],
+		[ 'slug' => 'landing-storia-vs',  'label' => 'Confronto',  'template' => 'template-landing-storia-vs.php' ],
 	];
 
 	$current_template = get_page_template_slug( get_queried_object_id() );
