@@ -93,59 +93,6 @@ require_once REGOLIA_DIR . '/github-updater.php';
 new Regolia_GitHub_Updater();
 
 /* ════════════════════════════════════════
-   LANDING SWITCHER (public during test phase)
-   ════════════════════════════════════════
-   Returns the switcher HTML for the four landing templates. Rendered by
-   footer.php so the markup lives inside the site footer, not floating.
-   Returns empty string when the current view is not a landing page.
-*/
-function regolia_render_landing_switcher(): string {
-	if ( ! is_page() ) {
-		return '';
-	}
-
-	$landings = [
-		[ 'slug' => 'home',               'label' => 'Default',    'template' => 'template-landing-default.php' ],
-		[ 'slug' => 'landing-famiglia',   'label' => 'Famiglia',   'template' => 'template-landing-famiglia.php' ],
-		[ 'slug' => 'landing-prezzo',     'label' => 'Prezzo',     'template' => 'template-landing-prezzo.php' ],
-		[ 'slug' => 'landing-compliance', 'label' => 'Compliance', 'template' => 'template-landing-compliance.php' ],
-		[ 'slug' => 'landing-rischi',     'label' => 'Rischi',     'template' => 'template-landing-rischi.php' ],
-		[ 'slug' => 'landing-conto-nero', 'label' => 'Storia',     'template' => 'template-landing-conto-nero.php' ],
-		[ 'slug' => 'landing-storia-vs',  'label' => 'Confronto',  'template' => 'template-landing-storia-vs.php' ],
-	];
-
-	$current_template = get_page_template_slug( get_queried_object_id() );
-	$is_landing = in_array(
-		$current_template,
-		array_column( $landings, 'template' ),
-		true
-	);
-	if ( ! $is_landing ) {
-		return '';
-	}
-
-	$out  = '<div class="rg-landing-switcher" aria-label="' . esc_attr__( 'Anteprima landing', 'regolia' ) . '">';
-	$out .= '<span class="rg-landing-switcher__label">' . esc_html__( 'Landing', 'regolia' ) . '</span>';
-	foreach ( $landings as $l ) {
-		$page = get_page_by_path( $l['slug'] );
-		if ( ! $page ) {
-			continue;
-		}
-		$url    = ( 'home' === $l['slug'] ) ? home_url( '/' ) : get_permalink( $page->ID );
-		$active = ( $current_template === $l['template'] );
-		$out   .= sprintf(
-			'<a href="%s" class="rg-landing-switcher__btn%s">%s</a>',
-			esc_url( $url ),
-			$active ? ' is-active' : '',
-			esc_html( $l['label'] )
-		);
-	}
-	$out .= '</div>';
-
-	return $out;
-}
-
-/* ════════════════════════════════════════
    HELPER FUNCTIONS
    ════════════════════════════════════════ */
 
