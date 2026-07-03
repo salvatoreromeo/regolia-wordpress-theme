@@ -51,7 +51,7 @@ add_action( 'wp_enqueue_scripts', function (): void {
 
 	wp_enqueue_style(
 		'regolia-fonts',
-		'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap',
+		'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap',
 		[],
 		null
 	);
