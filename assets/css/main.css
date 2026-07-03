@@ -323,7 +323,7 @@ ul, ol { list-style: none; }
 .btn-primary:hover {
   background: var(--clr-brand-800);
   border-color: var(--clr-brand-800);
-  box-shadow: 0 4px 14px rgba(13,107,79,.3);
+  box-shadow: 0 4px 14px rgba(15,107,79,.3);
 }
 
 .rg-btn--secondary {
@@ -897,11 +897,11 @@ ul, ol { list-style: none; }
   letter-spacing: 0.01em;
   color: var(--clr-brand-700);
   text-decoration: none;
-  border-bottom: 1px dashed rgba(13, 107, 79, 0.35);
+  border-bottom: 1px dashed rgba(15, 107, 79, 0.35);
 }
 .rg-story__teaser-cta:hover {
   color: var(--clr-brand-800);
-  border-bottom-color: rgba(13, 107, 79, 0.6);
+  border-bottom-color: rgba(15, 107, 79, 0.6);
 }
 
 /* Chapter */
@@ -1035,7 +1035,7 @@ ul, ol { list-style: none; }
   border: 1px solid rgba(217, 79, 79, 0.25);
 }
 .rg-story__compare-card--good {
-  background: rgba(26, 158, 115, 0.12);
+  background: rgba(43, 168, 125, 0.12);
   border: 1px solid var(--clr-brand-500);
 }
 .rg-story__compare-label {
