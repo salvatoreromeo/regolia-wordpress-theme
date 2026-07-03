@@ -38,5 +38,6 @@ Ogni volta che il tema viene aggiornato, dopo aver applicato le modifiche al cod
 3. **Push** su `main` (`git push origin main`).
 4. **Tag annotato** con la nuova versione: `git tag -a v<x.y.z> -m "<note>"`.
 5. **Push del tag**: `git push origin v<x.y.z>`.
+6. **GitHub Release** sul tag: `gh release create v<x.y.z> --title "v<x.y.z>" --notes "<changelog>"`.
 
-Il GitHub Updater del tema usa i tag per rilevare nuove versioni, quindi senza tag il sito in produzione non riceve l'aggiornamento. Non saltare nessuno di questi step.
+Il GitHub Updater del tema interroga `releases/latest`, quindi **il solo tag non basta**: senza la GitHub Release il sito in produzione non vede l'aggiornamento. Non saltare nessuno di questi step. Procedura completa di deploy in produzione (tema + contenuti pagine): vedi `DEPLOY.md`.
