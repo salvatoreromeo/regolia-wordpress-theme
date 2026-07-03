@@ -5,16 +5,29 @@
 
 /* ── CSS Custom Properties (Design Tokens) ── */
 :root {
-  /* Brand greens */
-  --clr-brand-900: #0A4F3A;
-  --clr-brand-800: #0B5C44;
-  --clr-brand-700: #0D6B4F;
-  --clr-brand-500: #1A9E73;
-  --clr-brand-300: #4EC9A0;
-  --clr-brand-100: #D0F0E0;
-  --clr-brand-50:  #E8F5EE;
-  --clr-mint:      #C5F5DC;
-  --clr-mint-light:#EAFFF4;
+  /* Palette ufficiale Regolia (brand board 2026-07) — ancore */
+  --regolia-green-900: #0F6B4F;
+  --regolia-green-600: #47C599;
+  --regolia-mint-400:  #9DE2C2;
+  --regolia-mint-200:  #CDEFDE;
+  --regolia-mint-50:   #E9F7F0;
+  /* Stop derivati (stessa tonalità del green-900) */
+  --regolia-green-950: #0B4A38;
+  --regolia-green-800: #0D5C44;
+  --regolia-green-700: #2BA87D;
+  /* Gradiente brand — solo momenti di marca (chip logo, icona app) */
+  --grad-brand: linear-gradient(135deg, #47C599, #9DE2C2);
+
+  /* Brand greens (token storici rimappati sulle ancore) */
+  --clr-brand-900: var(--regolia-green-950);
+  --clr-brand-800: var(--regolia-green-800);
+  --clr-brand-700: var(--regolia-green-900);
+  --clr-brand-500: var(--regolia-green-700);
+  --clr-brand-300: var(--regolia-green-600);
+  --clr-brand-100: var(--regolia-mint-200);
+  --clr-brand-50:  var(--regolia-mint-50);
+  --clr-mint:      var(--regolia-mint-400);
+  --clr-mint-light:var(--regolia-mint-50);
 
   /* Warm grays */
   --clr-warm-50:  #FAFBFA;
@@ -34,8 +47,8 @@
   --clr-white:  #FFFFFF;
 
   /* Typography */
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-body:    'Nunito', system-ui, -apple-system, sans-serif;
 
   /* Spacing scale */
   --space-1: 0.25rem;
@@ -60,9 +73,9 @@
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-card: 0 1px 3px rgba(10,79,58,.06), 0 4px 12px rgba(10,79,58,.04);
-  --shadow-md:   0 4px 16px rgba(10,79,58,.10);
-  --shadow-hero: 0 8px 40px rgba(10,79,58,.12), 0 2px 8px rgba(0,0,0,.04);
+  --shadow-card: 0 1px 3px rgba(15,107,79,.06), 0 4px 12px rgba(15,107,79,.04);
+  --shadow-md:   0 4px 16px rgba(15,107,79,.10);
+  --shadow-hero: 0 8px 40px rgba(15,107,79,.12), 0 2px 8px rgba(0,0,0,.04);
 
   /* Layout */
   --container-max: 1160px;
