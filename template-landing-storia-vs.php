@@ -23,7 +23,7 @@ get_header();
      ═══════════════════════════════════════ -->
 <section class="rg-story__opening">
     <div class="rg-container rg-story__container">
-        <span class="rg-badge rg-badge--light">Due storie, un confronto</span>
+        <span class="rg-badge">Due storie, un confronto</span>
         <h1 class="rg-story__headline">
             Il lavoro in nero costa <em>meno</em>.<br>
             Finché non costa <em>troppo</em>.
