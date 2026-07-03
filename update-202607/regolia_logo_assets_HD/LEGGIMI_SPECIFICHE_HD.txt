@@ -1,0 +1,26 @@
+REGOLIA - ASSET LOGO / SPECIFICHE
+
+Questo pacchetto contiene asset raster ad alta risoluzione per uso web/app e mockup, oltre a varianti SVG monocromatiche tracciate.
+
+FILE PRINCIPALI
+- regolia_logo_horizontal_transparent@4x.png: 4028 x 1124 px, sfondo trasparente. Consigliato per header, sito, presentazioni, mockup e consegna a sviluppatori.
+- regolia_logo_horizontal_transparent@2x.png: 2014 x 562 px, sfondo trasparente. Uso web retina / layout responsive.
+- regolia_logo_horizontal_transparent.png: 1007 x 281 px, sfondo trasparente. Uso web standard.
+- regolia_icon_transparent@4x.png: 1048 x 1076 px, sfondo trasparente. Simbolo isolato in alta risoluzione.
+- regolia_icon_transparent_1024.png: 1024 x 1024 px, simbolo su canvas quadrato trasparente.
+- regolia_app_icon_square_1024.png: 1024 x 1024 px, icona app/social su fondo quadrato.
+- regolia_app_icon_square_512/192/180/64/32.png: formati per web/app/favicon/social.
+- regolia_brand_board_final.png: 1254 x 1254 px, tavola riepilogativa del marchio.
+- regolia_brand_board_final.pdf: tavola riepilogativa in PDF.
+- regolia_palette.css: variabili colore CSS.
+- *_vector_mono.svg: varianti SVG monocromatiche tracciate dal raster, utili per prove web e mockup.
+
+NOTA IMPORTANTE
+Questi file sono adatti per uso web/app e consegna operativa ai developer. Per una brand identity definitiva da grafico, stampa grande formato o produzione tipografica, è consigliato ridisegnare il logo in vettoriale nativo in Figma/Illustrator e consegnare SVG/PDF/AI/EPS vettoriali puliti. Gli SVG presenti sono tracciati dal raster, non un master vettoriale nativo.
+
+COLORI INDICATIVI
+--regolia-dark-green: #0F6B4F;
+--regolia-green: #47C599;
+--regolia-mint: #9DE2C2;
+--regolia-light-mint: #CDEFDE;
+--regolia-bg: #E9F7F0;
