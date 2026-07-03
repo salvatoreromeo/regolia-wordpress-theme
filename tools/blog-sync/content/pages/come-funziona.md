@@ -1,36 +1,36 @@
 ---
 title: Come funziona
 slug: come-funziona
-date: '2026-04-29T18:00:00Z'
+date: '2026-07-03T10:00:00Z'
 status: publish
 excerpt: >-
-  Tre passi e sei a posto. Inserisci i dati della lavoratrice, calcola il costo
-  completo, lascia che Regolia gestisca contratti, buste paga e contributi.
-  L'assunzione richiede meno di dieci minuti.
+  In 3 passi tutto è in regola. Scegli la figura e l'orario, vedi il costo
+  completo e decidi, poi Regolia gestisce tutto: INPS, buste paga e contributi.
+  Completare l'assunzione richiede in media meno di 8 minuti.
 ---
 
-## Tre passi e sei a posto
+## In 3 passi tutto è in regola
 
-Abbiamo progettato Regolia per essere semplice da usare anche per chi non ha mai gestito un rapporto di lavoro domestico. Non serve conoscere la normativa, non serve saper fare i conti con i contributi. Bastano tre passi.
+Abbiamo progettato Regolia per essere semplice da usare anche per chi non ha mai gestito un rapporto di lavoro domestico. Non serve conoscere la normativa, non serve saper fare i conti con i contributi. Bastano 3 passi.
 
-<figure class="rg-page-figure"><img src="/wp-content/themes/regolia-wordpress-theme/assets/images/steps/step-1-aggiungi.webp" alt="Passo 1 — scegli figura e orario" width="800" height="800" loading="lazy" decoding="async"></figure>
+<figure class="rg-page-figure"><img src="/wp-content/themes/regolia-wordpress-theme/assets/images/steps/step-1-aggiungi.webp" alt="Passo 1 — scegli la figura e l'orario" width="800" height="800" loading="lazy" decoding="async"></figure>
 
 ## Passo 1 — Scegli la figura e l'orario
 
-Indica che tipo di collaboratore stai cercando o hai già: colf, badante o baby sitter. Inserisci le ore settimanali e il numero di giorni in cui lavora. Se hai già la persona, inserisci anche il suo livello contrattuale CCNL. Se non lo sai, Regolia ti aiuta a capire quale livello si applica in base alle mansioni.
+Dopo aver inserito la tua email, scegli il tipo di collaboratore da gestire: colf, badante, baby sitter o altro. Indica i giorni e le ore settimanali in cui lavora e la paga oraria netta che intendi garantirgli. Al resto pensa tutto Regolia.
 
-<figure class="rg-page-figure"><img src="/wp-content/themes/regolia-wordpress-theme/assets/images/steps/step-2-firma.webp" alt="Passo 2 — calcola e firma" width="800" height="800" loading="lazy" decoding="async"></figure>
+<figure class="rg-page-figure"><img src="/wp-content/themes/regolia-wordpress-theme/assets/images/steps/step-2-firma.webp" alt="Passo 2 — vedi il costo e decidi" width="800" height="800" loading="lazy" decoding="async"></figure>
 
-## Passo 2 — Calcola il costo e firma
+## Passo 2 — Vedi il costo e decidi
 
-Prima ancora di assumere, Regolia ti mostra il costo completo mensile: stipendio netto per la lavoratrice, contributi INPS a tuo carico, ratei di tredicesima e TFR. Non ci sono costi nascosti. Sai già dall'inizio quanto spenderai ogni mese e puoi confrontare scenari diversi. Quando sei pronto, firmi il contratto digitalmente — senza stampare nulla.
+Prima di scegliere di procedere, Regolia ti mostra il costo completo, con ogni dettaglio, senza costi nascosti. Sai già dall'inizio quanto spenderai e puoi confrontare scenari diversi. Quando sei pronto, firmi il contratto digitalmente, senza stampare nulla.
 
 <figure class="rg-page-figure"><img src="/wp-content/themes/regolia-wordpress-theme/assets/images/steps/step-3-paga.webp" alt="Passo 3 — Regolia gestisce tutto" width="800" height="800" loading="lazy" decoding="async"></figure>
 
 ## Passo 3 — Regolia gestisce tutto
 
-Una volta confermata l'assunzione, Regolia si occupa di tutto il resto. Invia la comunicazione all'INPS, genera il contratto da firmare digitalmente, produce le buste paga ogni mese e ti avvisa prima di ogni scadenza contributiva. Smith, il nostro assistente AI, lavora in background per tenerti sempre in regola. Il team di Studio Pentha è disponibile per qualsiasi domanda o situazione fuori dalla routine.
+Una volta firmata l'assunzione, Regolia si occupa di tutto il resto: comunicazione all'INPS, buste paga ogni mese e gestione del pagamento dei contributi. Il nostro team di esperti verifica tutto costantemente e resta disponibile per qualsiasi domanda o dubbio.
 
 ## Quanto ci vuole per iniziare?
 
-In media, completare l'assunzione su Regolia richiede **meno di dieci minuti**. Hai bisogno solo dei dati della lavoratrice e del tuo codice fiscale. Tutto il resto lo fa l'app.
+In media, completare l'assunzione su Regolia richiede **meno di 8 minuti**. Hai bisogno solo dei tuoi dati e di quelli della lavoratrice o del lavoratore, o di un suo contatto. Tutto il resto lo fa Regolia.

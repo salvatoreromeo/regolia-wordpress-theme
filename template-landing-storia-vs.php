@@ -66,13 +66,13 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Anna comincia martedì. Marco apre Regolia dal cellulare,
-                        inserisce le ore, sceglie il contratto CCNL. Tutto firmato
-                        in dieci minuti, senza mettere piede in uno studio.
+                        Anna comincia martedì. Marco apre Regolia,
+                        inserisce le ore e sceglie la mansione. Tutto fatto
+                        in dieci minuti, senza muoversi da casa.
                     </p>
                     <p>
-                        Da quel momento: buste paga, contributi INPS, TFR,
-                        assistenza. <strong>Pensiamo a tutto noi.</strong>
+                        Da quel momento: contratto in regola, buste paga,
+                        contributi INPS, TFR. <strong>Pensa a tutto Regolia.</strong>
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
@@ -92,13 +92,13 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Anche Luca comincia martedì con Anna. Stesse ore,
-                        stessa paga oraria. Si accordano a parole:
-                        pagamento in contanti ogni venerdì, niente contratto.
+                        Luca assume Anna con le stesse ore e la stessa paga.
+                        Si accordano a voce: nessun contratto, niente buste
+                        paga e contributi.
                     </p>
                     <p>
-                        Lo fanno in tanti. Per Luca i €30 al mese di Regolia
-                        possono restare in tasca: niente di cui preoccuparsi.
+                        Lo fanno in tanti. E per ora, i €30 al mese di Regolia
+                        rimangono in tasca.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
@@ -137,13 +137,12 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Anna si scotta cucinando. Niente di grave: una visita,
-                        un paio di giorni fermi. Marco apre l'app, segnala
-                        l'evento, e&hellip; basta.
+                        Anna si scotta cucinando. Niente di grave, ma qualche
+                        giorno a casa ci vuole. Marco segnala tutto dall'app.
                     </p>
                     <p>
-                        <strong>La copertura INAIL</strong> attiva dal giorno uno
-                        fa il suo lavoro. Marco non anticipa un euro.
+                        <strong>La copertura INAIL</strong> era attiva dal
+                        primo giorno. Zero anticipi, zero pensieri.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
@@ -163,18 +162,17 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Stesso imprevisto in casa di Luca. Stessa visita,
-                        stessi giorni fermi. Ma senza contratto <strong>niente
-                        INAIL</strong>, e le spese le tira fuori lui <strong>per legge</strong>: visita,
-                        farmaci, i giorni non lavorati.
+                        Stesso imprevisto in casa di Luca. Ma senza contratto
+                        <strong>non c'è copertura INAIL</strong> e Luca è
+                        costretto a pagare le spese.
                     </p>
                     <p>
-                        Non è una tragedia. È una sorpresa che non aveva
-                        messo in conto.
+                        Non è una catastrofe. È solo una sorpresa che non
+                        aveva messo in conto.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
-                    Di tasca sua: <strong>~€650</strong>
+                    Di tasca sua: <strong>€650</strong>
                 </span>
             </div>
 
@@ -209,18 +207,18 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Sono passati due anni. Arriva la <strong>CU</strong>,
-                        pronta per il 730. Marco scarica le detrazioni,
-                        controlla la dashboard e va a fare colazione.
+                        Sono passati due anni. Dichiarazioni sempre pronte
+                        e consegnate alla dipendente, contributi recuperati
+                        nella dichiarazione di Marco.
                     </p>
                     <p>
                         <em>&ldquo;Mi ero quasi dimenticato di avere una
-                        colf&rdquo;</em>, dice a un amico. E lo pensa davvero:
-                        tutto funziona da solo.
+                        colf&rdquo;</em>, sta pensando Marco mentre fa
+                        colazione.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
-                    Sempre <strong>€30/mese</strong> · + detrazioni
+                    Sempre <strong>€30/mese</strong> · + detrazioni fiscali
                 </span>
             </div>
 
@@ -236,17 +234,18 @@ get_header();
                 </figure>
                 <div class="rg-storia-vs__side-text">
                     <p>
-                        Due anni dopo, a Luca arrivano un paio di sorprese
-                        in più: una richiesta di arretrati e una verifica
-                        INPS. Tutto sommato, parliamo di oltre €12.000.
+                        Dopo due anni a Luca arrivano invece una vertenza
+                        per arretrati e un recupero contributi INPS, che
+                        sommati fanno un costo imprevisto di €10.000.
                     </p>
                     <p>
-                        Niente detrazioni nel 730. E un pensiero in più
-                        ogni volta che apre la cassetta della posta.
+                        <em>&ldquo;Non mi scorderò mai questa
+                        esperienza&rdquo;</em>, sta pensando Luca mentre
+                        si reca dal suo legale.
                     </p>
                 </div>
                 <span class="rg-storia-vs__side-pill">
-                    A fine storia: <strong>oltre €12.000</strong> · in un colpo
+                    A fine storia: <strong>€10.000</strong> · in un colpo
                 </span>
             </div>
 
@@ -263,7 +262,7 @@ get_header();
 
         <div class="rg-story__ledger-header">
             <span class="rg-badge rg-badge--light">Il conto a fine storia</span>
-            <h2 class="rg-story__ledger-title">Stesse ore. Stesso stipendio. Vita diversa.</h2>
+            <h2 class="rg-story__ledger-title">Stesse ore. Stesso stipendio. Diverso risultato.</h2>
         </div>
 
         <div class="rg-story__compare">
@@ -272,10 +271,10 @@ get_header();
                 <span class="rg-story__compare-label">La via di Marco</span>
                 <span class="rg-story__compare-number">€&nbsp;30<small>/mese</small></span>
                 <ul class="rg-story__compare-list">
-                    <li>Contratto CCNL firmato digitalmente</li>
-                    <li>INPS versati nei termini, ogni trimestre</li>
-                    <li>TFR accantonato, CU annuale pronta per il 730</li>
-                    <li>Copertura INAIL attiva dal giorno uno</li>
+                    <li>Contratto firmato</li>
+                    <li>Contributi INPS versati</li>
+                    <li>Copertura INAIL attivata</li>
+                    <li>Rapporto e TFR gestiti</li>
                 </ul>
                 <p class="rg-story__compare-foot">
                     Sempre €30, ogni mese. Serenità inclusa.
@@ -286,11 +285,12 @@ get_header();
 
             <div class="rg-story__compare-card rg-story__compare-card--bad">
                 <span class="rg-story__compare-label">La via di Luca</span>
-                <span class="rg-story__compare-number">€&nbsp;12.500</span>
+                <span class="rg-story__compare-number">€&nbsp;10.650</span>
                 <ul class="rg-story__compare-list">
-                    <li>Imprevisto a carico suo</li>
-                    <li>Arretrati e contributi non versati</li>
-                    <li>Nessuna detrazione nel 730</li>
+                    <li>Arretrati con interessi</li>
+                    <li>Contributi con sanzioni</li>
+                    <li>Infortunio a suo carico</li>
+                    <li>Mille imprevisti da gestire</li>
                 </ul>
                 <p class="rg-story__compare-foot">
                     In due anni. Più lo stress, che non si mette a bilancio.
@@ -300,7 +300,7 @@ get_header();
         </div>
 
         <p class="rg-story__ledger-kicker">
-            Stesso stipendio, stesse ore, <strong>vita diversa</strong>.
+            Stesso stipendio, stesse ore, <strong>diverso risultato</strong>.
         </p>
         <div class="rg-story__ledger-cta">
             <button
