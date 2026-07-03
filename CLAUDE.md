@@ -2,13 +2,13 @@
 
 ## Stile illustrazioni (brand)
 
-Lo stile visivo del brand Regolia è ispirato alle reference in `assets/design images/`, ma **semplificato**: meno gradienti, meno riempimenti, più aria.
+Lo stile visivo del brand Regolia è ispirato alle reference in `assets/design images/`, ma **semplificato**: meno gradienti, meno riempimenti, più aria. Riferimento completo del brand (palette, tipografia, logo, componenti): `design-system-regolia.md`.
 
 **Regole:**
 - **Tecnica:** flat 2D line illustration (niente 3D, niente clay, niente plasticine).
 - **Palette (monocromatica verde):**
-  - outline / stroke principale: deep green `#0D6B4F`
-  - fill piatti: mint `#C5F5DC`, light mint `#EAFFF4`
+  - outline / stroke principale: deep green `#0F6B4F`
+  - fill piatti: mint `#9DE2C2`, light mint `#CDEFDE` (fondo chiarissimo `#E9F7F0` se serve un campo)
   - accenti caldi occasionali (uno per immagine max): ambra `#E6A817`
   - niente neri, niente grigi neutri — solo verdi + off-white
 - **Stroke:** medium-thin, ~2-3px a 800px, uniforme, con lineCaps e lineJoins arrotondati.
@@ -20,7 +20,7 @@ Lo stile visivo del brand Regolia è ispirato alle reference in `assets/design i
 - **Formato output:** WebP RGBA, 800×800, `cwebp -q 85 -alpha_q 95`.
 
 **Prompt base Gemini riutilizzabile** (adatta solo il soggetto):
-> `Flat 2D line illustration in a minimalist vector style. {SOGGETTO}. Monochromatic green palette: outlines in deep green #0D6B4F, soft mint #C5F5DC fills on a few selected shapes, most of the drawing is outline only. Rounded stroke caps, medium-thin uniform line weight, no shading, no gradients, no 3D effect, no plasticine. Centered composition with generous padding, 1:1 square. Clean white background. No text, no letters, no numbers. Simple, airy, friendly, premium fintech illustration style.`
+> `Flat 2D line illustration in a minimalist vector style. {SOGGETTO}. Monochromatic green palette: outlines in deep green #0F6B4F, soft mint #9DE2C2 fills on a few selected shapes, most of the drawing is outline only. Rounded stroke caps, medium-thin uniform line weight, no shading, no gradients, no 3D effect, no plasticine. Centered composition with generous padding, 1:1 square. Clean white background. No text, no letters, no numbers. Simple, airy, friendly, premium fintech illustration style.`
 
 Pipeline di generazione consigliata:
 1. Gemini → "Crea immagine" → prompt con white background
