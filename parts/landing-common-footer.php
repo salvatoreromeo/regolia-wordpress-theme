@@ -57,12 +57,12 @@ defined( 'ABSPATH' ) || exit;
                 </div>
             </div>
             <ul class="rg-pricing__features">
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Buste paga mensili automatiche</li>
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Contributi INPS calcolati e versati</li>
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> TFR accantonato e liquidato</li>
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Certificazione Unica annuale</li>
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Contratto CCNL con firma digitale</li>
-                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Assistenza dedicata in chat</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Buste paga mensili automatiche</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Contributi INPS calcolati e versati</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> TFR accantonato e liquidato</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Certificazione Unica annuale</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Contratto CCNL con firma digitale</li>
+                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg> Assistenza dedicata in chat</li>
             </ul>
             <a href="#waitlist" class="rg-btn rg-btn--primary rg-btn--lg rg-btn--full">
                 Scopri quanto costa

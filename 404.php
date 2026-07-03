@@ -7,7 +7,7 @@ get_header();
     <div class="rg-container">
         <div class="rg-404">
             <div class="rg-404__icon" aria-hidden="true">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0D6B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0F6B4F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 3L2 21h20z"/>
                     <path d="M12 10v4"/>
                     <path d="M12 17v.01"/>

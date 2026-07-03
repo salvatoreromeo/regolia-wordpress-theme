@@ -164,7 +164,7 @@ ul, ol { list-style: none; }
 }
 .site-header.scrolled,
 .rg-header.scrolled {
-  box-shadow: 0 2px 12px rgba(10,79,58,.08);
+  box-shadow: 0 2px 12px rgba(15,107,79,.08);
 }
 
 .site-header .container,
@@ -1095,10 +1095,10 @@ ul, ol { list-style: none; }
   margin-top: var(--space-6);
 }
 .rg-story__ledger-cta .rg-btn--primary {
-  box-shadow: 0 0 0 1px rgba(10, 79, 58, 0.62), 0 14px 34px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 1px rgba(15, 107, 79, 0.62), 0 14px 34px rgba(255, 255, 255, 0.3);
 }
 .rg-story__ledger-cta .rg-btn--primary:hover {
-  box-shadow: 0 0 0 1px rgba(10, 79, 58, 0.74), 0 18px 42px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 1px rgba(15, 107, 79, 0.74), 0 18px 42px rgba(255, 255, 255, 0.4);
 }
 
 /* Finale */
@@ -1231,7 +1231,7 @@ ul, ol { list-style: none; }
   overflow: hidden;
   margin: var(--space-4) 0 var(--space-5);
   background: var(--clr-white);
-  border: 1px solid rgba(10, 79, 58, 0.06);
+  border: 1px solid rgba(15, 107, 79, 0.06);
 }
 .rg-storia-vs__side-scene img {
   width: 100%;
