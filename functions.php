@@ -133,6 +133,14 @@ function regolia_handle_waitlist(): void {
 		);
 	}
 
+	// Successo: atterra sulla pagina di ringraziamento dedicata, se esiste.
+	$grazie = get_page_by_path( 'grazie' );
+	if ( $grazie ) {
+		wp_safe_redirect( get_permalink( $grazie ) );
+		exit;
+	}
+
+	// Fallback: banner inline sulla pagina di provenienza.
 	$redirect( 'ok' );
 }
 add_action( 'admin_post_nopriv_regolia_waitlist', 'regolia_handle_waitlist' );

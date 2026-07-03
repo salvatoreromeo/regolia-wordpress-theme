@@ -889,6 +889,25 @@ ul, ol { list-style: none; }
   width: fit-content;
   margin: var(--space-5) auto 0;
 }
+
+/* Pagina Grazie (waitlist) */
+.rg-grazie { min-height: calc(100dvh - var(--header-h)); display: flex; align-items: center; }
+.rg-grazie__check {
+  width: 112px;
+  height: 112px;
+  margin: var(--space-6) auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--clr-brand-50);
+}
+.rg-grazie__note {
+  font-size: 0.9375rem;
+  color: var(--clr-warm-500);
+  max-width: 480px;
+  margin: 0 auto var(--space-8);
+}
 .rg-story__teaser-cta {
   display: inline-block;
   margin-top: var(--space-4);
