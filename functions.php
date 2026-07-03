@@ -93,6 +93,44 @@ require_once REGOLIA_DIR . '/github-updater.php';
 new Regolia_GitHub_Updater();
 
 /* ════════════════════════════════════════
+   SMTP (invio email)
+   ════════════════════════════════════════ */
+
+/*
+ * Configura PHPMailer per usare un server SMTP, se le costanti sono definite in
+ * wp-config.php. Le CREDENZIALI NON stanno nel tema (repo pubblico): qui c'è
+ * solo il codice che le legge. Definire in wp-config.php di ogni ambiente:
+ *
+ *   define( 'REGOLIA_SMTP_HOST', 'smtp.mx.cloudflare.net' );
+ *   define( 'REGOLIA_SMTP_PORT', 465 );
+ *   define( 'REGOLIA_SMTP_SECURE', 'ssl' );   // implicit TLS (SMTPS) su 465
+ *   define( 'REGOLIA_SMTP_USER', 'api_token' );
+ *   define( 'REGOLIA_SMTP_PASS', '…token…' );
+ *   define( 'REGOLIA_SMTP_FROM', 'noreply@regolia.it' );
+ *   define( 'REGOLIA_SMTP_FROM_NAME', 'Regolia' );
+ */
+add_action( 'phpmailer_init', function ( $phpmailer ): void {
+	if ( ! defined( 'REGOLIA_SMTP_HOST' ) || ! REGOLIA_SMTP_HOST ) {
+		return;
+	}
+	$phpmailer->isSMTP();
+	$phpmailer->Host       = REGOLIA_SMTP_HOST;
+	$phpmailer->Port       = defined( 'REGOLIA_SMTP_PORT' ) ? (int) REGOLIA_SMTP_PORT : 465;
+	$phpmailer->SMTPSecure = defined( 'REGOLIA_SMTP_SECURE' ) ? REGOLIA_SMTP_SECURE : 'ssl';
+	$phpmailer->SMTPAuth   = true;
+	$phpmailer->Username   = defined( 'REGOLIA_SMTP_USER' ) ? REGOLIA_SMTP_USER : '';
+	$phpmailer->Password   = defined( 'REGOLIA_SMTP_PASS' ) ? REGOLIA_SMTP_PASS : '';
+} );
+
+add_filter( 'wp_mail_from', function ( $from ) {
+	return ( defined( 'REGOLIA_SMTP_FROM' ) && REGOLIA_SMTP_FROM ) ? REGOLIA_SMTP_FROM : $from;
+} );
+
+add_filter( 'wp_mail_from_name', function ( $name ) {
+	return ( defined( 'REGOLIA_SMTP_FROM_NAME' ) && REGOLIA_SMTP_FROM_NAME ) ? REGOLIA_SMTP_FROM_NAME : $name;
+} );
+
+/* ════════════════════════════════════════
    WAITLIST FORM HANDLER
    ════════════════════════════════════════ */
 

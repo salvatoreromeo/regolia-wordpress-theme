@@ -196,6 +196,56 @@ Dettagli completi: `tools/blog-sync/README.md`.
 
 ---
 
+## 2bis. Email / SMTP (Cloudflare)
+
+Il container `wordpress:latest` non ha un MTA: senza SMTP nessuna email parte
+(notifiche waitlist incluse). L'invio è configurato via **SMTP di Cloudflare**.
+
+- **Codice**: `functions.php` (hook `phpmailer_init` + filtri `wp_mail_from*`)
+  legge le credenziali da costanti. Sta nel repo pubblico, **senza segreti**.
+- **Credenziali**: solo in `wp-config.php` di prod (privato) e nel file locale
+  gitignorato `secrets/smtp-cloudflare.env` (mai versionato). Parametri Cloudflare:
+  host `smtp.mx.cloudflare.net`, porta `465`, TLS implicito (`ssl`), utente
+  letterale `api_token`, password = API token Cloudflare (`cfut_…`), from
+  `noreply@regolia.it`.
+
+Impostare le costanti su prod (i valori vengono letti dal file locale, così il
+token non finisce nella shell history in chiaro):
+
+```bash
+# 1. trasferisci i valori sul server (temporaneo)
+scp -i ~/projects/ssh/github_regolia/id_ssh secrets/smtp-cloudflare.env root@178.104.215.167:/root/smtp.env
+
+# 2. scrivi le costanti in wp-config.php via wp-cli e cancella il file
+ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 'bash -s' <<'REMOTE'
+set -a; . /root/smtp.env; set +a
+WC=regolia-wordpress-wordpress-1; NET=regolia-wordpress_default
+ENVF=$(mktemp); docker inspect "$WC" --format '{{range .Config.Env}}{{println .}}{{end}}' | grep '^WORDPRESS_DB' > "$ENVF"
+wpset() { docker run --rm --user 33:33 --volumes-from "$WC" --network "$NET" --env-file "$ENVF" -e V="$2" wordpress:cli sh -c "wp config set $1 \"\$V\" --type=constant" 2>/dev/null; }
+wpset REGOLIA_SMTP_HOST "$REGOLIA_SMTP_HOST"
+wpset REGOLIA_SMTP_PORT "$REGOLIA_SMTP_PORT"
+wpset REGOLIA_SMTP_SECURE "$REGOLIA_SMTP_SECURE"
+wpset REGOLIA_SMTP_USER "$REGOLIA_SMTP_USER"
+wpset REGOLIA_SMTP_PASS "$REGOLIA_SMTP_PASS"
+wpset REGOLIA_SMTP_FROM "$REGOLIA_SMTP_FROM"
+wpset REGOLIA_SMTP_FROM_NAME "$REGOLIA_SMTP_FROM_NAME"
+rm -f /root/smtp.env "$ENVF"
+REMOTE
+```
+
+Test invio (deve arrivare in casella):
+
+```bash
+ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 \
+ "docker run --rm --user 33:33 --volumes-from regolia-wordpress-wordpress-1 --network regolia-wordpress_default \
+  --env-file <(docker inspect regolia-wordpress-wordpress-1 --format '{{range .Config.Env}}{{println .}}{{end}}' | grep '^WORDPRESS_DB') \
+  wordpress:cli wp eval 'var_dump( wp_mail( get_option(\"admin_email\"), \"Test SMTP Regolia\", \"Funziona.\" ) );'"
+```
+
+> **From address**: Cloudflare accetta solo mittenti di un dominio verificato
+> nell'account (qui `regolia.it`). Se il test fallisce con errore di sender,
+> aggiornare `REGOLIA_SMTP_FROM` con un indirizzo valido di quel dominio.
+
 ## 3. Pubblicazione, chi-siamo→bozza, menu (via wp-cli)
 
 Esempio reale usato il 2026-07-03 (crea `perche-regolia` pubblicata, manda

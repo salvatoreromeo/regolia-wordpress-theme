@@ -12,3 +12,6 @@ tools/blog-sync/node_modules/
 
 # Backup dei temi scaricati da produzione (rollback locale, non versionati)
 backups/
+
+# Segreti (SMTP, token) — mai versionati
+secrets/
