@@ -119,13 +119,17 @@ function regolia_handle_waitlist(): void {
 		$redirect( 'invalid' );
 	}
 
-	$list = get_option( 'regolia_waitlist_emails', [] );
-	if ( ! is_array( $list ) ) {
-		$list = [];
+	$entries = get_option( 'regolia_waitlist_emails', [] );
+	if ( ! is_array( $entries ) ) {
+		$entries = [];
 	}
-	if ( ! in_array( $email, $list, true ) ) {
-		$list[] = $email;
-		update_option( 'regolia_waitlist_emails', $list, false );
+	$existing = array_map(
+		static fn( $e ) => is_array( $e ) ? ( $e['email'] ?? '' ) : (string) $e,
+		$entries
+	);
+	if ( ! in_array( $email, $existing, true ) ) {
+		$entries[] = [ 'email' => $email, 'date' => current_time( 'mysql' ) ];
+		update_option( 'regolia_waitlist_emails', $entries, false );
 		wp_mail(
 			get_option( 'admin_email' ),
 			__( 'Nuova iscrizione alla waitlist Regolia', 'regolia' ),
@@ -145,6 +149,111 @@ function regolia_handle_waitlist(): void {
 }
 add_action( 'admin_post_nopriv_regolia_waitlist', 'regolia_handle_waitlist' );
 add_action( 'admin_post_regolia_waitlist', 'regolia_handle_waitlist' );
+
+/**
+ * Ritorna gli iscritti normalizzati: sempre [ ['email'=>, 'date'=>], … ].
+ * Retrocompatibile con le voci salvate come semplice stringa email.
+ */
+function regolia_get_waitlist(): array {
+	$raw = get_option( 'regolia_waitlist_emails', [] );
+	if ( ! is_array( $raw ) ) {
+		return [];
+	}
+	$out = [];
+	foreach ( $raw as $e ) {
+		if ( is_array( $e ) ) {
+			$out[] = [ 'email' => (string) ( $e['email'] ?? '' ), 'date' => (string) ( $e['date'] ?? '' ) ];
+		} else {
+			$out[] = [ 'email' => (string) $e, 'date' => '' ];
+		}
+	}
+	return $out;
+}
+
+/* ── Pagina admin: elenco iscritti waitlist ── */
+add_action( 'admin_menu', function (): void {
+	add_menu_page(
+		__( 'Waitlist Regolia', 'regolia' ),
+		__( 'Waitlist', 'regolia' ),
+		'manage_options',
+		'regolia-waitlist',
+		'regolia_render_waitlist_page',
+		'dashicons-email-alt',
+		26
+	);
+} );
+
+function regolia_render_waitlist_page(): void {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$list  = regolia_get_waitlist();
+	$total = count( $list );
+	// Più recenti in cima (se hanno una data).
+	$sorted = $list;
+	usort( $sorted, static fn( $a, $b ) => strcmp( $b['date'], $a['date'] ) );
+
+	$export_url = wp_nonce_url(
+		admin_url( 'admin-post.php?action=regolia_export_waitlist' ),
+		'regolia_export_waitlist'
+	);
+	?>
+	<div class="wrap">
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Waitlist Regolia', 'regolia' ); ?></h1>
+		<a href="<?php echo esc_url( $export_url ); ?>" class="page-title-action"><?php esc_html_e( 'Esporta CSV', 'regolia' ); ?></a>
+		<hr class="wp-header-end">
+
+		<p><strong><?php echo (int) $total; ?></strong> <?php esc_html_e( 'iscritti totali.', 'regolia' ); ?></p>
+
+		<?php if ( ! $total ) : ?>
+			<p><?php esc_html_e( 'Ancora nessuna iscrizione.', 'regolia' ); ?></p>
+		<?php else : ?>
+			<table class="wp-list-table widefat fixed striped">
+				<thead>
+					<tr>
+						<th style="width:60px;">#</th>
+						<th><?php esc_html_e( 'Email', 'regolia' ); ?></th>
+						<th style="width:220px;"><?php esc_html_e( 'Data iscrizione', 'regolia' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $sorted as $i => $row ) : ?>
+						<tr>
+							<td><?php echo (int) ( $i + 1 ); ?></td>
+							<td><a href="<?php echo esc_url( 'mailto:' . $row['email'] ); ?>"><?php echo esc_html( $row['email'] ); ?></a></td>
+							<td><?php echo $row['date'] ? esc_html( $row['date'] ) : '&mdash;'; ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/* ── Export CSV degli iscritti ── */
+function regolia_export_waitlist(): void {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'Permessi insufficienti.', 'regolia' ) );
+	}
+	check_admin_referer( 'regolia_export_waitlist' );
+
+	$list = regolia_get_waitlist();
+
+	nocache_headers();
+	header( 'Content-Type: text/csv; charset=utf-8' );
+	header( 'Content-Disposition: attachment; filename=regolia-waitlist-' . gmdate( 'Y-m-d' ) . '.csv' );
+
+	$out = fopen( 'php://output', 'w' );
+	fprintf( $out, "\xEF\xBB\xBF" ); // BOM per Excel
+	fputcsv( $out, [ 'email', 'data' ] );
+	foreach ( $list as $row ) {
+		fputcsv( $out, [ $row['email'], $row['date'] ] );
+	}
+	fclose( $out );
+	exit;
+}
+add_action( 'admin_post_regolia_export_waitlist', 'regolia_export_waitlist' );
 
 /* ════════════════════════════════════════
    HELPER FUNCTIONS
