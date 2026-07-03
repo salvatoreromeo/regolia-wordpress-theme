@@ -18,7 +18,7 @@ get_header();
     <section class="rg-story__opening rg-grazie">
         <div class="rg-container rg-story__container">
 
-            <span class="rg-badge">Sei in lista</span>
+            <span class="rg-badge">Iscrizione confermata</span>
 
             <div class="rg-grazie__check" aria-hidden="true">
                 <svg width="72" height="72" viewBox="0 0 24 24" fill="none"
@@ -30,13 +30,13 @@ get_header();
 
             <h1 class="rg-story__headline">
                 Grazie! Ci sei.<br>
-                Ti scriviamo <em>a breve</em>.
+                Ti scriviamo <em>subito</em>.
             </h1>
 
             <p class="rg-story__lede">
-                Abbiamo registrato la tua email. Appena Regolia è pronta nella tua
-                zona, ti arriva un messaggio con il <strong>link per scaricare
-                l'app</strong> e iniziare a mettere tutto in regola.
+                Abbiamo registrato la tua email. Regolia è già attiva in tutta
+                Italia: ti arriva subito un messaggio con il <strong>link per
+                scaricare l'app</strong> e iniziare a mettere tutto in regola.
             </p>
 
             <p class="rg-grazie__note">

@@ -78,11 +78,11 @@ defined( 'ABSPATH' ) || exit;
 <section class="rg-waitlist" id="waitlist">
     <div class="rg-container">
         <div class="rg-waitlist__inner">
-            <span class="rg-badge rg-badge--light">Lista d'attesa</span>
-            <h2 class="rg-waitlist__title">Sii tra i primi a provarlo</h2>
+            <span class="rg-badge rg-badge--light">Scarica l'app</span>
+            <h2 class="rg-waitlist__title">Comincia oggi con Regolia</h2>
             <p class="rg-waitlist__sub">
-                Regolia è in beta. Lascia la tua email e ti avvisiamo
-                non appena sarà disponibile nella tua area.
+                Regolia è già attiva in tutta Italia. Lascia la tua email
+                e ti mandiamo il link per scaricare l'app.
             </p>
             <?php
             if ( function_exists( 'wpcf7_get_contact_form_by_title' ) ) {

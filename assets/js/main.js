@@ -107,7 +107,7 @@
     if (!status) return;
 
     var messages = {
-      ok:      { text: 'Grazie! Ti avvisiamo appena Regolia è disponibile nella tua zona.', ok: true },
+      ok:      { text: 'Grazie! Ti mandiamo subito un’email con il link per scaricare l’app.', ok: true },
       invalid: { text: 'Controlla l’indirizzo email e riprova.', ok: false },
       error:   { text: 'Qualcosa è andato storto. Riprova tra poco.', ok: false }
     };
