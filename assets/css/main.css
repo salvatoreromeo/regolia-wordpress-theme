@@ -1005,7 +1005,7 @@ ul, ol { list-style: none; }
 /* Ledger / final compare */
 .rg-story__ledger {
   padding: var(--space-24) 0;
-  background: linear-gradient(180deg, var(--clr-warm-900) 0%, var(--clr-brand-900) 100%);
+  background: linear-gradient(180deg, var(--regolia-green-950) 0%, var(--regolia-green-800) 100%);
   color: var(--clr-white);
   text-align: center;
 }
@@ -1616,8 +1616,8 @@ ul, ol { list-style: none; }
    ══════════════════════════════════════ */
 .site-footer,
 .rg-footer {
-  background: var(--clr-warm-900);
-  color: var(--clr-warm-300);
+  background: var(--regolia-green-950);
+  color: var(--regolia-mint-200);
   padding: var(--space-16) 0 var(--space-8);
 }
 
