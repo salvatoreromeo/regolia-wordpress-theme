@@ -246,6 +246,31 @@ ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 \
 > nell'account (qui `regolia.it`). Se il test fallisce con errore di sender,
 > aggiornare `REGOLIA_SMTP_FROM` con un indirizzo valido di quel dominio.
 
+### ⚠️ Stato attuale (2026-07-04): invio NON attivo — blocco di rete
+
+Diagnosi dal server:
+- Cloudflare eroga SMTP **solo sulla 465** (TLS implicito).
+- Hetzner **blocca in uscita la 465 e la 25** (default anti-spam).
+- 587/2525 accettano il TCP (anycast) ma **non parlano SMTP** (nessun banner) →
+  non sono endpoint validi di Cloudflare.
+
+Quindi da questo server la config Cloudflare non invia. Le costanti SMTP su prod
+sono state **rimosse** per non avere tentativi a vuoto; le credenziali restano
+pronte in `secrets/smtp-cloudflare.env`. Il codice è comunque robusto:
+- la notifica waitlist parte via **WP-Cron** (`regolia_waitlist_notify`), fuori
+  dalla richiesta: il form non viene mai rallentato;
+- `phpmailer_init` imposta `Timeout = 12s` (fail-fast).
+
+**Per attivare l'invio, una delle due:**
+1. **Sbloccare la 465 in uscita** (ticket a Hetzner) e ri-applicare le costanti
+   dal file secrets (procedura sopra). Config già corretta per Cloudflare.
+2. **Usare un provider su 587/STARTTLS** (porta aperta su questo server), es.
+   Brevo: `host=smtp-relay.brevo.com port=587 secure=tls user=<login> pass=<smtp-key>`.
+   Aggiornare `secrets/smtp-cloudflare.env` e ri-applicare le costanti.
+
+I dati degli iscritti sono **sempre salvati** (opzione `regolia_waitlist_emails`,
+pagina Bacheca → Waitlist) indipendentemente dall'invio email.
+
 ## 3. Pubblicazione, chi-siamo→bozza, menu (via wp-cli)
 
 Esempio reale usato il 2026-07-03 (crea `perche-regolia` pubblicata, manda

@@ -120,6 +120,8 @@ add_action( 'phpmailer_init', function ( $phpmailer ): void {
 	$phpmailer->SMTPAuth   = true;
 	$phpmailer->Username   = defined( 'REGOLIA_SMTP_USER' ) ? REGOLIA_SMTP_USER : '';
 	$phpmailer->Password   = defined( 'REGOLIA_SMTP_PASS' ) ? REGOLIA_SMTP_PASS : '';
+	// Fail-fast: se il server SMTP non risponde, non tenere appesa la richiesta.
+	$phpmailer->Timeout = defined( 'REGOLIA_SMTP_TIMEOUT' ) ? (int) REGOLIA_SMTP_TIMEOUT : 12;
 } );
 
 add_filter( 'wp_mail_from', function ( $from ) {
@@ -168,11 +170,9 @@ function regolia_handle_waitlist(): void {
 	if ( ! in_array( $email, $existing, true ) ) {
 		$entries[] = [ 'email' => $email, 'date' => current_time( 'mysql' ) ];
 		update_option( 'regolia_waitlist_emails', $entries, false );
-		wp_mail(
-			get_option( 'admin_email' ),
-			__( 'Nuova iscrizione alla waitlist Regolia', 'regolia' ),
-			sprintf( "Email: %s\nData: %s", $email, current_time( 'mysql' ) )
-		);
+		// Notifica admin in background (WP-Cron): non blocca mai la submit del form,
+		// anche se l'SMTP è lento o non raggiungibile.
+		wp_schedule_single_event( time() + 5, 'regolia_waitlist_notify', [ $email ] );
 	}
 
 	// Successo: atterra sulla pagina di ringraziamento dedicata, se esiste.
@@ -187,6 +187,15 @@ function regolia_handle_waitlist(): void {
 }
 add_action( 'admin_post_nopriv_regolia_waitlist', 'regolia_handle_waitlist' );
 add_action( 'admin_post_regolia_waitlist', 'regolia_handle_waitlist' );
+
+/* Invia la notifica di iscrizione (eseguita da WP-Cron, fuori dalla richiesta). */
+add_action( 'regolia_waitlist_notify', function ( $email ): void {
+	wp_mail(
+		get_option( 'admin_email' ),
+		__( 'Nuova iscrizione alla waitlist Regolia', 'regolia' ),
+		sprintf( "Email: %s\nData: %s", (string) $email, current_time( 'mysql' ) )
+	);
+} );
 
 /**
  * Ritorna gli iscritti normalizzati: sempre [ ['email'=>, 'date'=>], … ].
