@@ -9,3 +9,6 @@ assets/design images/
 
 # Node dependencies (blog-sync tool)
 tools/blog-sync/node_modules/
+
+# Backup dei temi scaricati da produzione (rollback locale, non versionati)
+backups/
