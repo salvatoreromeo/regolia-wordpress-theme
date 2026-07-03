@@ -1,8 +1,49 @@
 # Deploy — Aggiornare il sito Regolia in produzione
 
-> Produzione: **http://178.104.215.167/** (Debian + Apache 2.4, PHP 8.3, WordPress).
-> L'host è raggiungibile anche via SSH (già in `~/.ssh/known_hosts`).
-> Ultima verifica di questo documento: 2026-07-03.
+> Produzione: **http://178.104.215.167/** (server Hetzner "regolia", Debian).
+> Ultima verifica di questo documento: 2026-07-03 (deploy v1.6.0 → v1.8.2 riuscito).
+
+## Infrastruttura prod (importante)
+
+Il sito **NON** è un'installazione WordPress nativa: gira in **Docker**.
+`php`/`wp-cli` non sono nel PATH dell'host. Container in esecuzione:
+
+| Container | Immagine | Ruolo |
+|---|---|---|
+| `regolia-wordpress-wordpress-1` | wordpress:latest | il sito WP (porta 80) |
+| `regolia-wordpress-db-1` | mariadb | DB del sito |
+| `regolia-prod-app` | regolia-app | l'app Regolia vera e propria (porta 5000) — **non toccare** |
+| `regolia-prod-db` | postgres:17 | DB dell'app — **non toccare** |
+
+- Docroot WP nel volume: `/var/lib/docker/volumes/regolia-wordpress_wp_data/_data`
+- Compose del sito: `/regolia-wordpress/docker-compose.yml`
+- Accesso: `ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167`
+  (chiave già installata in `authorized_keys`).
+
+### wp-cli via container (pattern riutilizzabile)
+
+wordpress:latest non include wp-cli. Si usa un container `wordpress:cli`
+effimero, con **due accortezze scoperte sul campo**:
+
+1. **`--user 33:33`** — i file del volume sono di www-data UID **33** (Debian),
+   ma `wordpress:cli` gira di default come UID **82** (Alpine): senza `--user 33:33`
+   gli update dei file falliscono con "Could not create directory".
+2. **Credenziali DB da env-file**, mai in chiaro nel comando (le legge dal
+   container in esecuzione).
+3. **Niente `-i`** in `docker run` dentro un heredoc SSH: consuma lo stdin
+   dello script e tronca i comandi successivi.
+
+```bash
+ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 'bash -s' <<'REMOTE'
+WC=regolia-wordpress-wordpress-1; NET=regolia-wordpress_default
+ENVF=$(mktemp); docker inspect "$WC" --format '{{range .Config.Env}}{{println .}}{{end}}' | grep '^WORDPRESS_DB' > "$ENVF"
+wpcli() { docker run --rm --user 33:33 --volumes-from "$WC" --network "$NET" --env-file "$ENVF" wordpress:cli sh -c "$1" 2>/dev/null; }
+wpcli 'wp theme list'
+rm -f "$ENVF"
+REMOTE
+```
+
+Test rapido di connettività/ambiente: `./tools/check-prod-connection.sh -i ~/projects/ssh/github_regolia/id_ssh`.
 
 Il sito ha **due canali di aggiornamento indipendenti**. Un deploy completo
 di solito li richiede entrambi:
@@ -46,22 +87,27 @@ gh release create vX.Y.Z --title "vX.Y.Z" --notes "changelog breve"
 > v1.0.0: i tag v1.1.0 → v1.8.2 erano stati pushati senza release, quindi
 > l'updater non ha mai proposto aggiornamenti e prod è rimasta alla v1.6.0.
 
-### 1c. Applicare l'aggiornamento su prod
-
-Da WP admin (`http://178.104.215.167/wp-admin/`):
-
-1. **Bacheca → Aggiornamenti** → "Verifica di nuovo" (l'updater cache-a la
-   risposta GitHub per 1 ora in un transient; questo forza il refresh).
-2. **Aspetto → Temi** → Regolia mostra "È disponibile una nuova versione" →
-   Aggiorna.
-
-In alternativa via SSH, se sul server è disponibile wp-cli:
+### 1c. Applicare l'aggiornamento su prod (via wp-cli in Docker)
 
 ```bash
-ssh <utente>@178.104.215.167
-wp transient delete --all --path=<path-wp>   # o solo il transient regolia_gh_release_*
-wp theme update regolia-wordpress-theme --path=<path-wp>
+ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 'bash -s' <<'REMOTE'
+set -e
+WC=regolia-wordpress-wordpress-1; NET=regolia-wordpress_default
+THEMES=/var/lib/docker/volumes/regolia-wordpress_wp_data/_data/wp-content/themes
+ENVF=$(mktemp); docker inspect "$WC" --format '{{range .Config.Env}}{{println .}}{{end}}' | grep '^WORDPRESS_DB' > "$ENVF"
+wpcli() { docker run --rm --user 33:33 --volumes-from "$WC" --network "$NET" --env-file "$ENVF" wordpress:cli sh -c "$1" 2>/dev/null; }
+tar czf /root/regolia-theme-backup-$(date +%Y%m%d-%H%M%S).tgz -C "$THEMES" regolia-wordpress-theme   # backup
+wpcli 'wp transient delete --all'                       # forza il ricontrollo dell'updater
+wpcli 'wp theme update regolia-wordpress-theme'         # scarica la GitHub Release e installa
+wpcli 'wp theme get regolia-wordpress-theme --field=version'
+rm -f "$ENVF"
+REMOTE
 ```
+
+In alternativa dal pannello: WP admin → Bacheca → Aggiornamenti → "Verifica di
+nuovo" → Aspetto → Temi → Regolia → Aggiorna. (Il fix dei permessi di
+`wp-content/upgrade` non serve più: dopo il primo update via UID 33 la cartella
+resta scrivibile.)
 
 ### 1d. Verifica
 
@@ -86,37 +132,95 @@ Note tecniche sull'updater (`github-updater.php`):
 I testi di Perché Regolia / Servizi / Come funziona / Contatti vivono nel
 database di prod. I sorgenti sono i markdown in `tools/blog-sync/content/pages/`.
 
-Serve una **Application Password** di un utente admin di prod
-(WP admin → Utenti → Profilo → Application Passwords → Add New).
+### Metodo A — via wp-cli in Docker (usato per il deploy 2026-07-03)
+
+Non richiede Application Password: si convertono i markdown in HTML in locale e
+si applicano via wp-cli. Le pagine hanno solo figure inline (URL asset del
+tema), nessuna immagine in evidenza da caricare.
+
+1. Genera l'HTML in locale (usa la stessa conversione di blog-sync):
 
 ```bash
 cd tools/blog-sync
-npm install          # solo la prima volta
+export OUT=/tmp/deploy-pages && mkdir -p "$OUT"
+node --input-type=module <<'JS'
+import fs from 'node:fs'; import path from 'node:path'; import matter from 'gray-matter';
+import { markdownToHtml } from './lib/md-to-html.mjs';
+const OUT = process.env.OUT;
+for (const slug of ['perche-regolia','servizi','come-funziona']) {
+  const { data: fm, content } = matter(fs.readFileSync(`content/pages/${slug}.md`,'utf8'));
+  fs.writeFileSync(path.join(OUT, slug+'.html'), markdownToHtml(content));
+  fs.writeFileSync(path.join(OUT, slug+'.title'), fm.title||'');
+  fs.writeFileSync(path.join(OUT, slug+'.excerpt'), (fm.excerpt||'').trim());
+}
+JS
+tar czf - -C "$OUT" . | ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 \
+  'rm -rf /root/deploy-pages && mkdir -p /root/deploy-pages && tar xzf - -C /root/deploy-pages'
+```
 
-WP_URL=http://178.104.215.167 \
-WP_USER=<utente-admin> \
-WP_APP_PASSWORD="xxxx xxxx xxxx xxxx xxxx xxxx" \
+2. Applica sul server (monta `/root/deploy-pages` nel container cli a `/pages`;
+   passa titoli/excerpt con `$(cat …)` per evitare problemi di quoting):
+
+```bash
+ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 'bash -s' <<'REMOTE'
+set -e
+WC=regolia-wordpress-wordpress-1; NET=regolia-wordpress_default
+ENVF=$(mktemp); docker inspect "$WC" --format '{{range .Config.Env}}{{println .}}{{end}}' | grep '^WORDPRESS_DB' > "$ENVF"
+wpcli() { docker run --rm --user 33:33 -v /root/deploy-pages:/pages:ro --volumes-from "$WC" --network "$NET" --env-file "$ENVF" wordpress:cli sh -c "$1" 2>/dev/null; }
+# ID pagine: servizi=8, come-funziona=9, chi-siamo=7 (verifica con: wpcli 'wp post list --post_type=page --fields=ID,post_name')
+wpcli 'wp post update 8 /pages/servizi.html --post_title="$(cat /pages/servizi.title)" --post_excerpt="$(cat /pages/servizi.excerpt)"'
+wpcli 'wp post update 9 /pages/come-funziona.html --post_title="$(cat /pages/come-funziona.title)" --post_excerpt="$(cat /pages/come-funziona.excerpt)"'
+rm -f "$ENVF"
+REMOTE
+```
+
+⚠️ **Niente `-i` nel `docker run`** dentro l'heredoc (consuma lo stdin e tronca).
+
+### Metodo B — via REST (blog-sync import)
+
+Richiede una **Application Password** admin (WP admin → Utenti → Profilo).
+
+```bash
+cd tools/blog-sync && npm install
+WP_URL=http://178.104.215.167 WP_USER=<admin> WP_APP_PASSWORD="xxxx …" \
   node import.mjs --type pages --interactive
 ```
 
-- `--interactive` chiede conferma per ogni pagina già esistente
-  (`y/n/a/o/q`); `--force` aggiorna tutto senza chiedere; `--dry-run` simula.
-- Le pagine **esistenti** (match per slug) vengono aggiornate preservando lo
-  stato publish/draft. Le pagine **nuove** (slug mai visto) vengono create
-  come **bozza**: vanno pubblicate a mano.
-- L'importer **non cancella mai** nulla: le rimozioni si fanno in WP admin.
+- Pagine esistenti (per slug) → aggiornate, stato preservato; slug nuovi → bozza.
+- **Non** importa `home`/`blog`/`contatti` se non vuoi toccarle: usa `--dir` su
+  una cartella filtrata, oppure il Metodo A (selettivo per ID).
+- ⚠️ Esiste un seed `landing-storia-vs.md` che creerebbe una bozza superflua:
+  escludilo o cancellala dopo.
 
-Dettagli completi del tool: `tools/blog-sync/README.md`.
+Dettagli completi: `tools/blog-sync/README.md`.
 
 ---
 
-## 3. Passi manuali in WP admin (quando servono)
+## 3. Pubblicazione, chi-siamo→bozza, menu (via wp-cli)
 
-- **Pubblicare** le pagine nuove create come bozza dall'import.
-- **Eliminare/reindirizzare** pagine sostituite (es. `chi-siamo` è stata
-  sostituita da `perche-regolia` a luglio 2026: l'import non la rimuove).
-- **Menu** (Aspetto → Menu): le voci puntano a pagine per ID, vanno
-  aggiornate a mano se cambia slug/titolo di una pagina.
+Esempio reale usato il 2026-07-03 (crea `perche-regolia` pubblicata, manda
+`chi-siamo` in bozza, ripunta la voce di menu). ID prod: chi-siamo=7,
+perche-regolia=18, menu "Principale"=term 2, voce "Chi siamo"=db_id 11.
+
+```bash
+ssh -i ~/projects/ssh/github_regolia/id_ssh root@178.104.215.167 'bash -s' <<'REMOTE'
+set -e
+WC=regolia-wordpress-wordpress-1; NET=regolia-wordpress_default
+ENVF=$(mktemp); docker inspect "$WC" --format '{{range .Config.Env}}{{println .}}{{end}}' | grep '^WORDPRESS_DB' > "$ENVF"
+wpcli() { docker run --rm --user 33:33 -v /root/deploy-pages:/pages:ro --volumes-from "$WC" --network "$NET" --env-file "$ENVF" wordpress:cli sh -c "$1" 2>/dev/null; }
+# crea/pubblica perche-regolia (se non esiste)
+wpcli 'wp post create /pages/perche-regolia.html --post_type=page --post_status=publish --post_name=perche-regolia --post_title="$(cat /pages/perche-regolia.title)" --post_excerpt="$(cat /pages/perche-regolia.excerpt)" --porcelain'
+wpcli 'wp post update 7 --post_status=draft'      # chi-siamo -> bozza
+# ripunta la voce di menu (wp-cli 7.x: 'wp menu item update' NON accetta type/id posizionali → usare postmeta)
+wpcli 'wp post meta update 11 _menu_item_object_id 18'
+wpcli 'wp post update 11 --post_title="Perché Regolia"'
+rm -f "$ENVF"
+REMOTE
+```
+
+Nota wp-cli 7.x: `wp menu item update <id> post <objid>` dà "Too many
+positional arguments" → aggiornare `_menu_item_object_id` via `wp post meta`.
+
 - **Site icon / favicon**: Aspetto → Personalizza → Identità del sito
   (usare `regolia_app_icon_square_512.png` dal pacchetto logo HD).
 
