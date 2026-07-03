@@ -1988,7 +1988,12 @@ ul, ol { list-style: none; }
     top: var(--header-h);
     left: 0;
     right: 0;
-    bottom: 0;
+    /* Il `.site-header` ha backdrop-filter, che crea un containing block per i
+       discendenti position:fixed: la nav si posiziona rispetto all'header, non
+       al viewport. `bottom:0` collasserebbe l'altezza a ~0, quindi la fissiamo
+       esplicitamente in unità viewport (dvh per la chrome mobile). */
+    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
     background: var(--clr-white);
     flex-direction: column;
     align-items: stretch;

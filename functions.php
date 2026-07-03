@@ -93,6 +93,52 @@ require_once REGOLIA_DIR . '/github-updater.php';
 new Regolia_GitHub_Updater();
 
 /* ════════════════════════════════════════
+   WAITLIST FORM HANDLER
+   ════════════════════════════════════════ */
+
+/**
+ * Gestisce l'invio del form waitlist (landing + footer).
+ * Il form fa POST a admin-post.php con action=regolia_waitlist.
+ * Salva l'email in un'opzione, avvisa l'admin e reindirizza con un flag di esito.
+ */
+function regolia_handle_waitlist(): void {
+	$referer = wp_get_referer() ?: home_url( '/' );
+	$referer = remove_query_arg( 'rg_waitlist', $referer );
+
+	$redirect = static function ( string $status ) use ( $referer ): void {
+		wp_safe_redirect( add_query_arg( 'rg_waitlist', $status, $referer ) . '#waitlist' );
+		exit;
+	};
+
+	if ( ! isset( $_POST['rg_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['rg_nonce'] ) ), 'regolia_waitlist_nonce' ) ) {
+		$redirect( 'error' );
+	}
+
+	$email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+	if ( ! is_email( $email ) ) {
+		$redirect( 'invalid' );
+	}
+
+	$list = get_option( 'regolia_waitlist_emails', [] );
+	if ( ! is_array( $list ) ) {
+		$list = [];
+	}
+	if ( ! in_array( $email, $list, true ) ) {
+		$list[] = $email;
+		update_option( 'regolia_waitlist_emails', $list, false );
+		wp_mail(
+			get_option( 'admin_email' ),
+			__( 'Nuova iscrizione alla waitlist Regolia', 'regolia' ),
+			sprintf( "Email: %s\nData: %s", $email, current_time( 'mysql' ) )
+		);
+	}
+
+	$redirect( 'ok' );
+}
+add_action( 'admin_post_nopriv_regolia_waitlist', 'regolia_handle_waitlist' );
+add_action( 'admin_post_regolia_waitlist', 'regolia_handle_waitlist' );
+
+/* ════════════════════════════════════════
    HELPER FUNCTIONS
    ════════════════════════════════════════ */
 

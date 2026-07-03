@@ -84,20 +84,57 @@
 
   /* ── Waitlist form ── */
   function initWaitlistForm() {
-    var form = document.querySelector('.rg-waitlist__form');
-    if (!form) return;
+    var forms = document.querySelectorAll('.rg-waitlist__form');
 
-    form.addEventListener('submit', function (e) {
-      var btn = form.querySelector('[type="submit"]');
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = 'Invio in corso…';
-      }
-      // Native form submission proceeds; re-enable on error
-      setTimeout(function () {
-        if (btn) { btn.disabled = false; btn.textContent = 'Iscrivimi →'; }
-      }, 8000);
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function () {
+        var btn = form.querySelector('[type="submit"]');
+        if (btn) {
+          btn.dataset.label = btn.textContent;
+          btn.disabled = true;
+          btn.textContent = 'Invio in corso…';
+        }
+        // La submit nativa prosegue; ripristina in caso di errore/back
+        setTimeout(function () {
+          if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Iscrivimi →'; }
+        }, 8000);
+      });
     });
+
+    // Esito post-submit (flag rg_waitlist nell'URL, impostato dal server)
+    var params = new URLSearchParams(window.location.search);
+    var status = params.get('rg_waitlist');
+    if (!status) return;
+
+    var messages = {
+      ok:      { text: 'Grazie! Ti avvisiamo appena Regolia è disponibile nella tua zona.', ok: true },
+      invalid: { text: 'Controlla l’indirizzo email e riprova.', ok: false },
+      error:   { text: 'Qualcosa è andato storto. Riprova tra poco.', ok: false }
+    };
+    var msg = messages[status];
+    if (!msg) return;
+
+    var anchor = document.querySelector('.rg-waitlist__form') ||
+                 document.getElementById('waitlist') ||
+                 document.querySelector('.rg-story__finale-form');
+    if (!anchor) return;
+
+    var banner = document.createElement('p');
+    banner.setAttribute('role', 'status');
+    banner.textContent = msg.text;
+    banner.style.cssText =
+      'margin:0 auto 1rem;max-width:520px;padding:.75rem 1rem;border-radius:.75rem;' +
+      'font-weight:600;text-align:center;' +
+      (msg.ok
+        ? 'background:#E9F7F0;color:#0F6B4F;border:1px solid #9DE2C2;'
+        : 'background:#FCEAEA;color:#B03636;border:1px solid #E7B4B4;');
+    anchor.parentNode.insertBefore(banner, anchor);
+
+    if (msg.ok) {
+      var input = anchor.querySelector && anchor.querySelector('input[type="email"]');
+      if (input) input.value = '';
+    }
+    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   /* ── Intersection observer: fade-in on scroll ── */
